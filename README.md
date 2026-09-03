@@ -32,7 +32,6 @@ O jogador explora os mapas utilizando o teclado.
 | `S` | Mover para baixo |
 | `D` | Mover para direita |
 | `E` | Interagir |
-| `I` | Abrir inventário |
 | `P` | Salvar o jogo |
 | `Q` | Sair |
 
