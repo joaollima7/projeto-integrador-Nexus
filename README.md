@@ -2,7 +2,7 @@
 
 ## 📖 Sobre o projeto
 
-O Nexus é um jogo educativo executado diretamente no terminal, criado para ensinar conceitos básicos sobre Inteligência Artificial de forma simples e interativa.
+O **Decifra.IA** é um jogo educativo executado diretamente no **terminal**, criado para ensinar conceitos básicos sobre Inteligência Artificial de forma simples e interativa.
 
 No jogo, o jogador fica preso dentro de um sistema controlado por uma IA chamada **NEXUS**. Para escapar, é necessário explorar diferentes fases, encontrar pistas, interagir com computadores e coletar chaves.
 
