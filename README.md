@@ -1,80 +1,94 @@
-# 🎮 Decifra.IA — Missão IA: Escape do Sistema
+<div align="center">
 
-## 📖 Descrição do jogo
+# 🎮 NEXUS
 
-O **Decifra.IA** é um jogo educativo de aventura e exploração executado diretamente no **terminal**.
+### ⚡ Um desafio, uma missão e uma experiência criada do zero.
 
-O jogador fica preso dentro de um sistema controlado por uma Inteligência Artificial chamada **NEXUS**. Para escapar, será necessário explorar os mapas, encontrar pistas, interagir com computadores, resolver problemas e coletar três chaves de segurança.
+<img src="assets/nexus-menu.png" alt="Tela inicial do NEXUS" width="850">
 
-Durante o jogo, são apresentados conceitos importantes sobre o uso da Inteligência Artificial, como informações falsas, privacidade, viés e decisões automatizadas.
+**NEXUS** é um jogo desenvolvido com foco em programação, lógica e experiência do usuário.
+A proposta é transformar conceitos de desenvolvimento de software em uma experiência interativa,
+com uma interface simples, estilo retrô e uma identidade visual inspirada em jogos clássicos.
 
-## ⭐ Principais características
+</div>
 
-- 🎮 Jogo de aventura e exploração no terminal;
-- 🗺️ Mapas diferentes em cada fase;
-- 🚶 Movimentação utilizando `W`, `A`, `S` e `D`;
-- 🔎 Exploração e descoberta de pistas;
-- 💻 Interação com computadores e objetos;
-- 🔑 Sistema de chaves e progressão entre fases;
-- 📊 Sistema simples de pontuação;
-- 💾 Salvamento do progresso;
-- 🧠 Abordagem educativa sobre Inteligência Artificial;
-- 🏆 Fase final com objetivo de escapar do sistema NEXUS.
+---
 
-## 🗺️ Fases
+## 🕹️ Sobre o jogo
 
-### 🧠 Fase 1 — Central da Verdade
+**NEXUS** é uma experiência de jogo em que o jogador navega pelos menus e interage com os
+elementos da interface utilizando o teclado.
 
-O jogador deve encontrar pistas e investigar computadores para descobrir qual sistema está apresentando informações incorretas.
+A ideia do projeto é unir **programação + criatividade + diversão**, criando um jogo acessível,
+com controles simples e uma apresentação visual marcante.
 
-Ao resolver o problema, recebe a **Chave da Verdade**.
+O projeto também representa a aplicação prática de conceitos como:
 
-### 🔐 Fase 2 — Setor de Privacidade
+- 🎯 Lógica de programação
+- ⌨️ Entrada e controle pelo teclado
+- 🧩 Estruturação de menus
+- 🎨 Interface e experiência do usuário
+- 💻 Organização e desenvolvimento de um projeto de software
 
-O jogador deve encontrar as informações necessárias para continuar a missão, evitando o acesso a dados pessoais desnecessários.
+---
 
-Ao concluir a fase, recebe a **Chave da Privacidade**.
+## 🚀 Funcionalidades
 
-### ⚖️ Fase 3 — Núcleo da Justiça
+### 📋 Menu principal
 
-O jogador deve investigar os computadores e descobrir uma informação inadequada utilizada pelo sistema de decisões.
+A tela inicial apresenta as principais opções do jogo:
 
-Após corrigir o problema, recebe a **Chave da Justiça**.
+- **Jogar** — inicia a experiência.
+- **Opções** — permite acessar as configurações disponíveis.
+- **Controles** — apresenta os comandos utilizados durante o jogo.
+- **Créditos** — mostra os integrantes responsáveis pelo projeto.
+- **Sair** — encerra o jogo.
 
-### 🚪 Fase Final — Escape
+### ⌨️ Controles
 
-Depois de conseguir as três chaves, o jogador pode abrir a porta final e escapar do sistema NEXUS.
+| Tecla | Função |
+|:---:|---|
+| ⬆️ **Seta para cima** | Navegar para a opção anterior |
+| ⬇️ **Seta para baixo** | Navegar para a próxima opção |
+| ↵ **Enter** | Selecionar a opção destacada |
 
-## 🎯 Objetivo
+> 💡 Os comandos principais aparecem na própria interface do jogo para facilitar a navegação.
 
-O principal objetivo é conseguir as três chaves:
+---
 
-- 🔑 Chave da Verdade
-- 🔑 Chave da Privacidade
-- 🔑 Chave da Justiça
-
-Depois disso, o jogador deve chegar até a saída para finalizar o jogo.
-
-## 👥 Integrantes e funções
+## 👥 Integrantes
 
 | Integrante | Função |
 |---|---|
-| **Rodrigo Alves** | Desenvolvimento principal em C e integração do jogo |
-| **João Victor Queiroz** | Desenvolvimento dos mapas e movimentação |
-| **João Guilherme Queiroz** | Desenvolvimento das fases e missões |
-| **João Victor Nicacio** | Sistema de interação e itens |
-| **Danilo Barros** | Sistema de pontuação e regras |
-| **Daniel Luiz** | Sistema de salvamento e arquivos |
-| **Thomas Barlavento** | Testes e correção de erros |
-| **Lucas** | História, documentação e organização do projeto |
+| **João Victor** | Desenvolvimento |
+| **Danilo** | Desenvolvimento |
 
-## 🛠️ Tecnologias
+---
 
-- **C** — desenvolvimento principal do jogo;
-- **Haskell** — regras e pontuação;
-- **Arquivos** — salvamento do progresso;
-- **Terminal** — interface do jogo.
+## 🎨 Identidade do projeto
 
-## 📌 Status
+O NEXUS utiliza uma estética **minimalista e retrô**, com predominância de tons escuros,
+tipografia monoespaçada e elementos visuais inspirados em interfaces de jogos clássicos.
 
-🚧 **Projeto em desenvolvimento.**
+A escolha desse estilo busca transmitir uma sensação de **tecnologia, mistério e imersão**,
+fazendo com que o menu seja parte da experiência do jogador.
+
+---
+
+## 🧠 Objetivo do projeto
+
+Mais do que criar um jogo, o projeto busca colocar em prática conhecimentos de desenvolvimento
+de software através de uma aplicação interativa.
+
+Durante o desenvolvimento, são trabalhados conceitos de:
+
+```text
+Programação
+    ↓
+Lógica
+    ↓
+Interação
+    ↓
+Interface
+    ↓
+Experiência do jogador
