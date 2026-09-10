@@ -1,94 +1,122 @@
-<div align="center">
+# NEXUS - Jogo Educativo sobre Inteligência Artificial
 
-# 🎮 NEXUS
+![Tela Principal do NEXUS: Uma interface de terminal em ASCII Art mostrando 'NEXUS', o menu com 'JOGAR' selecionado, e instruções de navegação com as setas.](image_0.png)
 
-### ⚡ Um desafio, uma missão e uma experiência criada do zero.
+## 📖 Sobre o jogo
 
-<img src="assets/nexus-menu.png" alt="Tela inicial do NEXUS" width="850">
+NEXUS é um jogo educativo de aventura e exploração desenvolvido para ser executado diretamente no terminal.
 
-**NEXUS** é um jogo desenvolvido com foco em programação, lógica e experiência do usuário.
-A proposta é transformar conceitos de desenvolvimento de software em uma experiência interativa,
-com uma interface simples, estilo retrô e uma identidade visual inspirada em jogos clássicos.
+O jogador fica preso dentro de um sistema controlado por uma Inteligência Artificial chamada NEXUS. Para conseguir escapar, será necessário explorar os mapas, encontrar pistas, investigar computadores, resolver problemas e coletar três chaves de segurança.
 
-</div>
+Durante a aventura, o jogador entra em contato com conceitos importantes relacionados ao uso da Inteligência Artificial, como:
 
----
+*   🧠 **Informações falsas e alucinações;**
+*   🔐 **Privacidade e proteção de dados;**
+*   ⚖️ **Viés e decisões injustas;**
+*   🤖 **Decisões automatizadas.**
 
-## 🕹️ Sobre o jogo
-
-**NEXUS** é uma experiência de jogo em que o jogador navega pelos menus e interage com os
-elementos da interface utilizando o teclado.
-
-A ideia do projeto é unir **programação + criatividade + diversão**, criando um jogo acessível,
-com controles simples e uma apresentação visual marcante.
-
-O projeto também representa a aplicação prática de conceitos como:
-
-- 🎯 Lógica de programação
-- ⌨️ Entrada e controle pelo teclado
-- 🧩 Estruturação de menus
-- 🎨 Interface e experiência do usuário
-- 💻 Organização e desenvolvimento de um projeto de software
+A proposta é transformar esses assuntos em uma experiência simples e interativa, utilizando exploração e resolução de situações dentro do próprio jogo.
 
 ---
 
-## 🚀 Funcionalidades
+## 🎯 Objetivo
 
-### 📋 Menu principal
+O objetivo principal é conseguir as três chaves de segurança:
 
-A tela inicial apresenta as principais opções do jogo:
+1.  🔑 **Chave da Verdade**
+2.  🔑 **Chave da Privacidade**
+3.  🔑 **Chave da Justiça**
 
-- **Jogar** — inicia a experiência.
-- **Opções** — permite acessar as configurações disponíveis.
-- **Controles** — apresenta os comandos utilizados durante o jogo.
-- **Créditos** — mostra os integrantes responsáveis pelo projeto.
-- **Sair** — encerra o jogo.
+Depois de conseguir todas elas, o jogador precisa chegar até a porta de saída para escapar do sistema NEXUS.
 
-### ⌨️ Controles
+---
+
+## ⭐ Principais características
+
+*   🎮 Aventura e exploração em modo terminal;
+*   🗺️ Mapas diferentes em cada fase;
+*   🚶 Movimentação pelo mapa;
+*   🔎 Exploração e descoberta de pistas;
+*   💻 Interação com computadores e objetos;
+*   🔑 Sistema de itens e chaves;
+*   📊 Sistema de pontuação;
+*   💾 Salvamento do progresso;
+*   🧠 Conteúdo educativo sobre Inteligência Artificial;
+*   🏆 Fase final com objetivo de escapar do sistema.
+
+---
+
+## 🕹️ Controles
+
+O jogo utiliza comandos simples para facilitar a navegação:
 
 | Tecla | Função |
-|:---:|---|
-| ⬆️ **Seta para cima** | Navegar para a opção anterior |
-| ⬇️ **Seta para baixo** | Navegar para a próxima opção |
-| ↵ **Enter** | Selecionar a opção destacada |
+| :---: | :--- |
+| **W** | Mover para cima |
+| **S** | Mover para baixo |
+| **A** | Mover para a esquerda |
+| **D** | Mover para a direita |
+| **E** | Interagir com objetos e computadores |
+| **I** | Abrir o inventário |
+| **P** | Salvar o jogo |
+| **Q** | Sair do jogo |
 
-> 💡 Os comandos principais aparecem na própria interface do jogo para facilitar a navegação.
-
----
-
-## 👥 Integrantes
-
-| Integrante | Função |
-|---|---|
-| **João Victor** | Desenvolvimento |
-| **Danilo** | Desenvolvimento |
+> **💡 Dica:** explore o mapa com atenção. Algumas informações importantes estão espalhadas pelo cenário.
 
 ---
 
-## 🎨 Identidade do projeto
+## 🗺️ Como funciona a aventura
 
-O NEXUS utiliza uma estética **minimalista e retrô**, com predominância de tons escuros,
-tipografia monoespaçada e elementos visuais inspirados em interfaces de jogos clássicos.
+A aventura é dividida em três fases principais e uma etapa final.
 
-A escolha desse estilo busca transmitir uma sensação de **tecnologia, mistério e imersão**,
-fazendo com que o menu seja parte da experiência do jogador.
+### 🧠 Fase 1 --- Central da Verdade
 
----
+O sistema NEXUS apresenta informações incorretas em um de seus computadores.
 
-## 🧠 Objetivo do projeto
+O jogador deve:
+1.  Explorar o mapa;
+2.  Encontrar uma pista;
+3.  Investigar os computadores;
+4.  Descobrir qual deles apresenta o erro;
+5.  Corrigir o sistema;
+6.  Coletar a **Chave da Verdade**.
 
-Mais do que criar um jogo, o projeto busca colocar em prática conhecimentos de desenvolvimento
-de software através de uma aplicação interativa.
+> **Tema:** informações falsas e confiabilidade das informações geradas por IA.
 
-Durante o desenvolvimento, são trabalhados conceitos de:
+### 🔐 Fase 2 --- Setor de Privacidade
 
-```text
-Programação
-    ↓
-Lógica
-    ↓
-Interação
-    ↓
-Interface
-    ↓
-Experiência do jogador
+O sistema está armazenando informações pessoais que não são necessárias para realizar suas tarefas.
+
+O jogador deve explorar o setor, encontrar os arquivos necessários e descobrir um código para desbloquear o sistema. Ao concluir a missão, recebe a **Chave da Privacidade**.
+
+> **Tema:** privacidade e uso responsável de dados.
+
+### ⚖️ Fase 3 --- Núcleo da Justiça
+
+O sistema de decisões da NEXUS está utilizando uma informação inadequada para tomar uma decisão.
+
+O jogador deve:
+1.  Encontrar uma pista;
+2.  Investigar os computadores;
+3.  Identificar a informação que está causando o problema;
+4.  Corrigir o sistema;
+5.  Coletar a **Chave da Justiça**.
+
+> **Tema:** viés e decisões automatizadas.
+
+### 🚪 Fase Final --- Escape
+
+Depois de conseguir as três chaves, o jogador finalmente pode chegar à porta de saída.
+
+```markdown
+[ Chave da Verdade ]       ✓
+[ Chave da Privacidade ]   ✓
+[ Chave da Justiça ]       ✓
+
+          ↓
+
+      PORTA FINAL
+
+          ↓
+
+       ESCAPE!
