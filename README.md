@@ -1,6 +1,7 @@
 # NEXUS - Jogo Educativo sobre Inteligência Artificial
 
-![Tela Principal do NEXUS: Uma interface de terminal em ASCII Art mostrando 'NEXUS', o menu com 'JOGAR' selecionado, e instruções de navegação com as setas.](image_0.png)
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/819a45a7-11ab-4680-9094-288a4352a7fa" />
+
 
 ## 📖 Sobre o jogo
 
