@@ -26,6 +26,7 @@ A proposta é transformar esses assuntos em uma experiência simples e
 interativa, utilizando exploração e resolução de situações dentro do
 próprio jogo.
 
+
 🎯 Objetivo
 
 O objetivo principal é conseguir as três chaves de segurança:
@@ -38,6 +39,7 @@ O objetivo principal é conseguir as três chaves de segurança:
 
 Depois de conseguir todas elas, o jogador precisa chegar até a porta
 de saída para escapar do sistema NEXUS.
+
 
 ⭐ Principais características
 
@@ -71,13 +73,14 @@ W   Mover para cima
 S   Mover para baixo
 A   Mover para a esquerda
 D   Mover para a direita
-E       Interagir com objetos e computadores
-I       Abrir o inventário
-P       Salvar o jogo
-Q       Sair do jogo
+E   Interagir com objetos e computadores
+I   Abrir o inventário
+P   Salvar o jogo
+Q   Sair do jogo
 
 💡 Dica: explore o mapa com atenção. Algumas informações
 importantes estão espalhadas pelo cenário.
+
 
 🗺️ Como funciona a aventura
 
@@ -156,6 +159,7 @@ porta de saída.
 Se todas as chaves tiverem sido encontradas, a porta é desbloqueada e o
 jogador consegue escapar do sistema.
 
+
 🧩 Sistema de jogo
 
 O NEXUS foi pensado para utilizar mecânicas simples e reaproveitáveis.
@@ -195,15 +199,14 @@ Arquivos --- armazenamento do progresso e informações do jogo;
 
 Terminal --- interface principal da experiência.
 
+
 👥 Integrantes
 
 Integrante                          Função
 
-Rodrigo Alves                   Desenvolvimento principal em C e
-integração do jogo
+Rodrigo Alves                   Desenvolvimento principal em C e integração do jogo
 
-João Victor Queiroz             Desenvolvimento dos mapas e
-movimentação
+João Victor Queiroz             Desenvolvimento dos mapas e movimentação
 
 João Victor Nicacio             Sistema de interação e itens
 
@@ -215,8 +218,8 @@ Gustavo Cassemiro               Testes e correção de erros
 
 Daniel Luiz                     Sistema de salvamento e arquivos
 
-Fernando Araújo                 Apoio no desenvolvimento e
-organização do projeto
+Fernando Araújo                 Apoio no desenvolvimento e organização do projeto
+
 
 🚀 Proposta do projeto
 
@@ -229,6 +232,7 @@ sistema.
 
 A missão é simples: encontrar as três chaves, corrigir os erros do
 sistema e escapar.
+
 
 🎮 NEXUS
 
