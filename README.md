@@ -27,6 +27,7 @@ interativa, utilizando exploração e resolução de situações dentro do
 próprio jogo.
 
 
+
 🎯 Objetivo
 
 O objetivo principal é conseguir as três chaves de segurança:
@@ -80,6 +81,7 @@ Q   Sair do jogo
 
 💡 Dica: explore o mapa com atenção. Algumas informações
 importantes estão espalhadas pelo cenário.
+
 
 
 🗺️ Como funciona a aventura
@@ -160,6 +162,7 @@ Se todas as chaves tiverem sido encontradas, a porta é desbloqueada e o
 jogador consegue escapar do sistema.
 
 
+
 🧩 Sistema de jogo
 
 O NEXUS foi pensado para utilizar mecânicas simples e reaproveitáveis.
@@ -200,25 +203,27 @@ Arquivos --- armazenamento do progresso e informações do jogo;
 Terminal --- interface principal da experiência.
 
 
+
 👥 Integrantes
 
 Integrante                          Função
 
-Rodrigo Alves                   Desenvolvimento principal em C e integração do jogo
+Rodrigo Alves:                   Desenvolvimento principal em C e integração do jogo
 
-João Victor Queiroz             Desenvolvimento dos mapas e movimentação
+João Victor Queiroz:             Desenvolvimento dos mapas e movimentação
 
-João Victor Nicacio             Sistema de interação e itens
+João Victor Nicacio:             Sistema de interação e itens
 
-João Guilherme Queiroz          Desenvolvimento das fases e missões
+João Guilherme Queiroz:          Desenvolvimento das fases e missões
 
-Danilo Barros                   Sistema de pontuação e regras
+Danilo Barros:                   Sistema de pontuação e regras
 
-Gustavo Cassemiro               Testes e correção de erros
+Gustavo Cassemiro:               Testes e correção de erros
 
-Daniel Luiz                     Sistema de salvamento e arquivos
+Daniel Luiz:                     Sistema de salvamento e arquivos
 
-Fernando Araújo                 Apoio no desenvolvimento e organização do projeto
+Fernando Araújo:                 Apoio no desenvolvimento e organização do projeto
+
 
 
 🚀 Proposta do projeto
@@ -232,6 +237,7 @@ sistema.
 
 A missão é simples: encontrar as três chaves, corrigir os erros do
 sistema e escapar.
+
 
 
 🎮 NEXUS
