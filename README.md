@@ -241,6 +241,7 @@ sistema e escapar.
 🎮 NEXUS
 
 Explore o sistema. Descubra os erros. Recupere as chaves.
+Escape do NEXUS
 
 ##Anexos:
  **Link do Trello:** https://trello.com/invite/b/6a99efa1bc0ba7766566dcf9/ATTI9fdd42898827a53c75effbdee9083b71BA91C41C/projeto-integrador-entregas-fds  
@@ -250,4 +251,3 @@ Explore o sistema. Descubra os erros. Recupere as chaves.
  **Link do Diagrama de Atividades:** https://www.figma.com/board/ECGOhLU5rYH2vMqNarHMec/Diagramas-de-atividades---FDS?node-id=0-1&t=GH0cTbkJmIx6VAhe-1  
    
 
-Escape do NEXUS
