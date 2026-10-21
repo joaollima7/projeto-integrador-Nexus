@@ -159,23 +159,35 @@ static void processarMapa(Jogo *jogo, char tecla) {
 }
 
 /* ----------------------------------------------------------------------------
- * COMPUTADOR C1: julgar p (resposta F) e depois ~p (resposta V)
+ * REGRA DA PORTA (conjuncao): a porta D fica aberta se C1 E C2 corrigidos.
+ * Reavaliada sempre que C1 ou C2 e concluido: portaAberta = c1 ^ c2.
+ * -------------------------------------------------------------------------- */
+static void atualizarPorta(EstadoJogo *partida) {
+    partida->portaAberta = partida->computador1Resolvido && partida->computador2Resolvido;
+}
+
+/* ----------------------------------------------------------------------------
+ * COMPUTADOR C1: julgar p (VALOR_P_C1 = F) e depois ~p (!VALOR_P_C1 = V)
  * -------------------------------------------------------------------------- */
 static void responderComputador1(Jogo *jogo, char tecla) {
     EstadoJogo *partida = &jogo->partida;
     EstadoInterface *ui = &jogo->ui;
     char respostaEsperada;
+    int valorEsperado;                   /* valor logico de p ou de ~p      */
 
     if (tecla == 'Q' || tecla == 'E') {
         ui->telaAtual = TELA_MAPA;
     } else {
-        respostaEsperada = (partida->etapaComputador1 == 0) ? 'F' : 'V';
+        /* etapa 0: julgar p ; etapa 1: julgar ~p (negacao do mesmo p) */
+        valorEsperado = (partida->etapaComputador1 == 0) ? VALOR_P_C1 : !VALOR_P_C1;
+        respostaEsperada = valorEsperado ? 'V' : 'F';
         if (tecla == respostaEsperada) {
             partida->etapaComputador1++;
             ui->mensagem = MSG_ACERTO;
             if (partida->etapaComputador1 == ETAPAS_C1) {
                 partida->computador1Resolvido = 1;
                 partida->pontos += PONTOS_COMPUTADOR;
+                atualizarPorta(partida);
             }
         } else {
             partida->respostasIncorretas++;
@@ -205,9 +217,9 @@ static void responderComputador2(Jogo *jogo, char tecla) {
             if (partida->linhaTabela == LINHAS_TABELA) {
                 partida->computador2Resolvido = 1;
                 partida->pontos += PONTOS_COMPUTADOR;
-                /* Regra da porta (conjuncao): abre se C1 E C2 corrigidos */
-                partida->portaAberta = partida->computador1Resolvido && partida->computador2Resolvido;
-                ui->mensagem = MSG_PORTA_ABERTA;
+                atualizarPorta(partida);
+                /* a mensagem de abertura so aparece se a porta abriu */
+                ui->mensagem = partida->portaAberta ? MSG_PORTA_ABERTA : MSG_ACERTO;
             }
         } else {
             partida->respostasIncorretas++;

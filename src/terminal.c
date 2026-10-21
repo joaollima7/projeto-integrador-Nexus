@@ -143,10 +143,10 @@ void desenharTela(const Jogo *jogo) {
         printf("  Pista: \"O servidor principal foi desligado as 22h.\"\n\n");
         printf("  A IA NEXUS afirma:\n");
         printf("   p : \"O servidor principal esta ligado.\"\n");
-        printf("       Valor logico: %c\n", partida->etapaComputador1 > 0 ? 'F' : '?');
+        printf("       Valor logico: %c\n", partida->etapaComputador1 > 0 ? (VALOR_P_C1 ? 'V' : 'F') : '?');
         printf("   ~p: \"Nao e verdade que o servidor principal\n");
         printf("        esta ligado.\"\n");
-        printf("       Valor logico: %c\n\n", partida->etapaComputador1 > 1 ? 'V' : '?');
+        printf("       Valor logico: %c\n\n", partida->etapaComputador1 > 1 ? (!VALOR_P_C1 ? 'V' : 'F') : '?');
 
         if (partida->etapaComputador1 == 0) {
             printf("  Qual o valor logico de p?\n");
@@ -188,7 +188,7 @@ void desenharTela(const Jogo *jogo) {
             printf("\n  Qual o valor de p ^ q nessa linha?\n");
             printf("  [V] Verdadeiro  [F] Falso  [Q] Sair do computador\n");
         } else {
-            printf("\n  FILTRO CORRIGIDO! A porta D foi destrancada.\n\n");
+            printf("\n  FILTRO CORRIGIDO!%s\n\n", partida->portaAberta ? " A porta D foi destrancada." : "");
             printf("  [E] Voltar ao mapa\n");
         }
 
