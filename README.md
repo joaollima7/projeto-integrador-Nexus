@@ -11,9 +11,8 @@
 - [🛠️ Tecnologias](#️-tecnologias)
 - [📦 Status do desenvolvimento](#-status-do-desenvolvimento)
 - [▶️ Como compilar e executar no VS Code](#️-como-compilar-e-executar-no-vs-code)
-- [🗂️ Estrutura do código](#️-estrutura-do-código)
 - [💻 Detalhes técnicos da Etapa 1 (PIF)](#-detalhes-técnicos-da-etapa-1-pif)
-- [⚠️ Limitações da versão atual](#️-limitações-da-versão-atual)
+- [📚 Documentação de FDS](#-documentação-de-fds)
 - [👥 Integrantes](#-integrantes)
 - [🚀 Proposta do projeto](#-proposta-do-projeto)
 - [📎 Anexos](#-anexos)
@@ -62,8 +61,6 @@ Depois de conseguir todas elas, o jogador precisa chegar até a porta de saída 
 - 🧠 Conteúdo educativo sobre Inteligência Artificial;
 - 🏆 Fase final com objetivo de escapar do sistema.
 
-> ℹ️ Esta é a visão completa do jogo. Na versão atual estão jogáveis o **menu** e a **Fase 1 (Central da Verdade)**; veja [Status do desenvolvimento](#-status-do-desenvolvimento) e [Limitações da versão atual](#️-limitações-da-versão-atual).
-
 ---
 
 ## 🕹️ Controles
@@ -76,21 +73,10 @@ O jogo utiliza comandos simples para facilitar a navegação. **Não é preciso 
 | `S` | Mover para baixo |
 | `A` | Mover para a esquerda |
 | `D` | Mover para a direita |
-| `E` | Interagir com objetos e computadores (em uma casa vizinha, inclusive na diagonal; o objeto ao lado tem prioridade sobre o da diagonal) |
+| `E` | Interagir com objetos e computadores (ao lado do jogador) |
 | `I` | Abrir o inventário |
 | `P` | Salvar o jogo (o salvamento em arquivo será implementado em uma próxima etapa) |
 | `Q` | Sair do jogo (pede confirmação) |
-
-**Teclas nas outras telas** (cada tela mostra a linha *"Teclas aceitas"*):
-
-| Tela | Teclas |
-|---|---|
-| Menu inicial / Fim da fase | `1`, `2` ou `3` |
-| Instruções | qualquer tecla volta ao menu |
-| Pista e Chave da Verdade | `E` para continuar |
-| Computadores C1 e C2 | `V` (verdadeiro) ou `F` (falso) para responder; `Q` sai do computador; depois de resolvido, `E` ou `Q` voltam ao mapa |
-| Inventário | `I` ou `Q` para fechar |
-| Confirmação de saída | `S` (sim) ou `N` (não) |
 
 **Símbolos do mapa:**
 
@@ -220,8 +206,8 @@ O progresso pode ser salvo para que o jogador continue a aventura posteriormente
 ## 🛠️ Tecnologias
 
 - **C** — desenvolvimento principal do jogo, menus, movimentação, mapas e fluxo das fases;
-- **Haskell** — regras e pontuação *(planejado; ainda não implementado)*;
-- **Arquivos** — armazenamento do progresso e informações do jogo *(planejado; ainda não implementado)*;
+- **Haskell** — regras e pontuação;
+- **Arquivos** — armazenamento do progresso e informações do jogo;
 - **Terminal** — interface principal da experiência.
 
 > 🪟 **Plataforma:** o jogo foi feito para **Windows**. Ele usa a biblioteca `conio.h`, que só existe no Windows, para ler as teclas sem precisar apertar ENTER.
@@ -235,24 +221,18 @@ O progresso pode ser salvo para que o jogador continue a aventura posteriormente
 | **Etapa 1 – PIF** | Núcleo imperativo em C: menu principal e Fase 1 (Central da Verdade) jogáveis do início ao fim | ✅ Concluída |
 | Próximas etapas | Fase 2, Fase 3, Fase Final, salvamento em arquivo e regras/pontuação em Haskell | 🔜 Em desenvolvimento |
 
-O código da Etapa 1 está organizado em módulos na pasta `src/` (veja [Estrutura do código](#️-estrutura-do-código)).
+Nesta etapa, todo o código está no arquivo `nexus.c`, na raiz do repositório.
 
 ---
 
 ## ▶️ Como compilar e executar no VS Code
-
-### Requisitos
-
-- **Windows** (o jogo usa `conio.h` e `system("cls")`, disponíveis apenas no Windows);
-- **GCC para Windows** com suporte a C99, por exemplo o MinGW-w64 instalado pelo [MSYS2](https://www.msys2.org/) (versão usada nos testes: GCC 16.2.0), com a pasta `bin` do compilador no `PATH`;
-- Um terminal: Prompt de Comando, PowerShell, Windows Terminal ou o terminal integrado do VS Code.
 
 ### 1. Abrir o projeto no VS Code
 
 Clone o repositório:
 
 ```bash
-git clone <https://github.com/joaollima7/projeto-integrador-Nexus.git>
+git clone <URL-DO-REPOSITORIO>
 ```
 
 No VS Code, vá em **Arquivo > Abrir Pasta...** (*File > Open Folder...*) e selecione a pasta do repositório.
@@ -266,10 +246,10 @@ Vá em **Terminal > Novo Terminal** (*Terminal > New Terminal*) ou use o atalho 
 No terminal, digite:
 
 ```bash
-gcc -Wall -Wextra -Wpedantic -std=c99 src/nexus.c src/jogo.c src/mapa.c src/terminal.c -o nexus.exe
+gcc -Wall -Wextra -std=c99 nexus.c -o nexus.exe
 ```
 
-Todos os arquivos `.c` da pasta `src/` precisam estar no comando. O código compila **sem erros e sem avisos (warnings)**, mesmo com as opções `-Wall -Wextra -Wpedantic`. Depois da compilação, o arquivo `nexus.exe` aparece na pasta do projeto (ele não é enviado ao repositório: `*.exe` está no `.gitignore`).
+O código compila **sem erros e sem avisos (warnings)**, mesmo com as opções `-Wall -Wextra`. Depois da compilação, o arquivo `nexus.exe` aparece na pasta do projeto.
 
 ### 4. Executar
 
@@ -279,43 +259,10 @@ No mesmo terminal, digite:
 .\nexus.exe
 ```
 
-No Prompt de Comando (`cmd`), também funciona apenas `nexus.exe`.
-
 > 💡 **Dicas:**
 > - Use o **terminal integrado** (passo 2) para executar o jogo. A aba *Output* (usada por extensões como o botão "Run Code") não consegue ler as teclas do jogo.
 > - **Clique dentro do terminal** antes de começar a jogar, para que as teclas sejam enviadas ao jogo.
 > - Para ver melhor o mapa, aumente a área do terminal arrastando a borda dele para cima.
-
----
-
-## 🗂️ Estrutura do código
-
-```
-src/
-├── nexus.c      game loop: coordena o ciclo do jogo (main)
-├── jogo.h       structs do estado e constantes de telas, mensagens e pontuação
-├── jogo.c       fluxo e regras: inicialização, reinício, movimento, desafios e pontos
-├── mapa.h       constantes do mapa (tamanho, posições, símbolos) e dos objetos
-├── mapa.c       consulta do mapa e seleção do objeto próximo
-├── terminal.h   declarações da interface
-└── terminal.c   desenho das telas e leitura das teclas (Windows)
-```
-
-| Módulo | Responsabilidade |
-|---|---|
-| `nexus.c` | Apenas o *game loop*: reinicia a fase se pedido → aplica o movimento → desenha a tela → lê a tecla → processa a tecla. |
-| `jogo.h` / `jogo.c` | Estado da partida (`EstadoJogo`) e da interface (`EstadoInterface`), reunidos na struct `Jogo`. Contém todas as regras: transições entre telas, colisões, interação com objetos, desafios dos computadores C1 e C2, pontuação e reinício. Não lê teclas nem escreve na tela. |
-| `mapa.h` / `mapa.c` | Mapa da Fase 1 calculado por regras (`celulaDoMapa`) e escolha do objeto ao alcance da tecla `E` (`procurarObjetoProximo`), com prioridade do objeto ao lado sobre o da diagonal. |
-| `terminal.h` / `terminal.c` | Tudo o que aparece no terminal (`desenharTela`, `mostrarDespedida`) e a leitura das teclas com `_getch()` (`lerTecla`). Recebe o jogo como `const`: a interface não altera o estado. |
-
-Dependências entre os arquivos (sem ciclos):
-
-```
-nexus.c ──► jogo.h, terminal.h
-jogo.c ───► jogo.h, mapa.h
-terminal.c ► terminal.h, mapa.h
-mapa.h, terminal.h ──► jogo.h
-```
 
 ---
 
@@ -332,9 +279,6 @@ mapa.h, terminal.h ──► jogo.h
 | `if` / `else` | Escolha da tela a desenhar, regras do mapa, colisão, interação e respostas dos computadores |
 | `while` | Game loop principal e validação de teclas inválidas |
 | `for` | Desenho do mapa (linhas × colunas), tabela-verdade e busca de objetos próximos |
-| Structs (`typedef struct`) | `EstadoJogo`, `EstadoInterface` e `Jogo`, em `jogo.h` |
-| Ponteiros para structs | As funções recebem `Jogo *` / `const Jogo *` e acessam os campos com `->` |
-| Funções e modularização | Código dividido em arquivos `.h` (declarações) e `.c` (implementações); funções auxiliares internas são `static` |
 
 ### Leitura de teclas sem ENTER
 
@@ -347,35 +291,52 @@ Com `scanf` ou `getchar`, o terminal só entrega o que foi digitado depois do EN
 
 ### Tratamento de entradas inválidas
 
-Toda leitura de tecla fica dentro de um laço `while`, que só termina quando a tecla é válida para a tela atual. Se a tecla for inválida, o jogo mostra um aviso e espera outra, sem travar nem encerrar. Espaço, ENTER, TAB e as setas do teclado são ignorados.
-
-O aviso é reescrito sempre **na mesma linha** (com `\r`), com um contador de avisos, então várias teclas inválidas seguidas não empurram o mapa para cima. Teclas de controle, como ESC e Backspace, aparecem no aviso como `?`.
+Toda leitura de tecla fica dentro de um laço `while`, que só termina quando a tecla é válida para a tela atual. Se a tecla for inválida, o jogo mostra um aviso e espera outra, sem travar nem encerrar. Espaço, ENTER e as setas do teclado são ignorados.
 
 ---
 
-## ⚠️ Limitações da versão atual
+## 📚 Documentação de FDS
 
-- Somente o **menu** e a **Fase 1** estão implementados. As Fases 2 e 3 e a Fase Final ainda não existem; a Chave da Privacidade e a Chave da Justiça aparecem no inventário, mas não podem ser obtidas.
-- **Não há persistência:** a tecla `P` apenas mostra um aviso; nada é salvo em arquivo e o progresso é perdido ao sair.
-- **Não há código em Haskell** nesta versão: regras e pontuação estão em C.
-- Funciona **somente no Windows** (`conio.h`, `_getch()` e `system("cls")`).
-- **Problema conhecido (N1):** a tecla `Ó` (código 224 na página de código 850) é confundida com o prefixo das teclas especiais (setas, F1...), e a tecla apertada em seguida é descartada.
-- A aparência foi verificada no console padrão do Windows (conhost); em outros terminais (Windows Terminal, terminal do VS Code) a exibição pode variar.
+> 📌 Os itens desta seção fazem parte das entregas da disciplina de **FDS (Fundamentos de Desenvolvimento de Software)**.
+
+### 👥 Programação em pares (FDS)
+
+| Integrantes | Implementação |
+|---|---|
+| João Victor Queiroz e Rodrigo Alves | Códigos dos arquivos `jogo.c` e `jogo.h` |
+| João Guilherme Queiroz, Danilo Barros e João Victor Nicacio | Códigos dos arquivos `mapa.c`, `mapa.h`, `terminal.c` e `terminal.h` |
+
+### 🏃 Sprint atual (FDS)
+
+**Week 12 (17/10 a 23/10):** Entrega 3 de FDS
+
+<img width="1532" height="455" alt="image" src="https://github.com/user-attachments/assets/a64e3558-4caf-4ea0-a0fa-824a6d230f24" />
+
+
+### 📋 Backlog (FDS)
+
+<img width="1527" height="618" alt="image" src="https://github.com/user-attachments/assets/5a438a57-4d87-4bc6-ba3e-df2e03ccd2fb" />
+
+
+### Screencast (FDS)
+
+https://drive.google.com/file/d/1eNFy9aUQpbELpfwjV-a6egrFYfncJwG8/view?usp=drivesdk
 
 ---
 
-## 👥 Integrantes  
+## 👥 Integrantes
 
-| Rodrigo Alves |  
-| João Victor Queiroz |  
-| João Victor Nicacio |  
-| João Guilherme Queiroz |  
-| Danilo Barros |  
-| Gustavo Cassemiro |  
-| Daniel Luiz |  
-| Fernando Araújo |  
-| Lucas Collier |  
-  
+| Integrante | Função |
+|---|---|
+| Rodrigo Alves | Desenvolvimento principal em C e integração do jogo |
+| João Victor Queiroz | Desenvolvimento dos mapas e movimentação |
+| João Victor Nicacio | Sistema de interação e itens |
+| João Guilherme Queiroz | Desenvolvimento das fases e missões |
+| Danilo Barros | Sistema de pontuação e regras |
+| Gustavo Cassemiro | Testes e correção de erros |
+| Daniel Luiz | Sistema de salvamento e arquivos |
+| Fernando Araújo | Apoio no desenvolvimento e organização do projeto |
+
 ---
 
 ## 🚀 Proposta do projeto
