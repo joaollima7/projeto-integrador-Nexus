@@ -9,10 +9,12 @@
 - [🗺️ Como funciona a aventura](#️-como-funciona-a-aventura)
 - [🧩 Sistema de jogo](#-sistema-de-jogo)
 - [🛠️ Tecnologias](#️-tecnologias)
+- [🧱 Decisões da stack](#-decisões-da-stack)
 - [📦 Status do desenvolvimento](#-status-do-desenvolvimento)
 - [▶️ Como compilar e executar no VS Code](#️-como-compilar-e-executar-no-vs-code)
 - [💻 Detalhes técnicos da Etapa 1 (PIF)](#-detalhes-técnicos-da-etapa-1-pif)
 - [📚 Documentação de FDS](#-documentação-de-fds)
+- [🏛️ Princípios de projeto no código](#️-princípios-de-projeto-no-código)
 - [👥 Integrantes](#-integrantes)
 - [🚀 Proposta do projeto](#-proposta-do-projeto)
 - [📎 Anexos](#-anexos)
@@ -214,6 +216,17 @@ O progresso pode ser salvo para que o jogador continue a aventura posteriormente
 
 ---
 
+## 🧱 Decisões da stack
+
+| Escolha | Por quê |
+|---|---|
+| **C** | Linguagem principal da disciplina de PIF; permite construir o jogo de terminal (mapas, movimentação e fluxo das fases) com controle total da entrada e da saída. |
+| **Haskell** | Paradigma funcional da disciplina de PIF; indicado para as regras e a pontuação, que são funções simples e previsíveis. |
+| **Arquivos** | Forma mais simples de guardar o progresso e as informações do jogo, sem precisar de banco de dados. |
+| **Terminal + `conio.h`** | O jogo reage à tecla sem precisar de ENTER. Como consequência, o jogo roda somente no **Windows**. |
+
+---
+
 ## 📦 Status do desenvolvimento
 
 | Etapa | Conteúdo | Status |
@@ -321,6 +334,18 @@ Toda leitura de tecla fica dentro de um laço `while`, que só termina quando a 
 ### Screencast (FDS)
 
 https://drive.google.com/file/d/1eNFy9aUQpbELpfwjV-a6egrFYfncJwG8/view?usp=drivesdk
+
+---
+
+## 🏛️ Princípios de projeto no código
+
+Princípios do capítulo 5 (*Engenharia de Software Moderna*, Marco Tulio Valente) aplicados na divisão do código em módulos:
+
+| Princípio | Onde está no código | Por que deixa o projeto melhor |
+|---|---|---|
+| **Responsabilidade Única** e **Coesão** | `mapa.c/.h` (mapas), `terminal.c/.h` (entrada e saída) e `jogo.c/.h` (fluxo, fases e regras) | Cada módulo tem um único motivo para mudar e só contém o que pertence ao seu assunto. |
+| **Ocultamento de informação** | Os arquivos `.h` expõem só as funções de uso externo; os detalhes ficam nos `.c` | Quem usa o módulo não depende de como ele funciona por dentro, então dá para alterá-lo sem quebrar o resto. |
+| **Acoplamento baixo** | `terminal` não conhece as regras do jogo e `mapa` não conhece o terminal; `jogo` usa os dois pelas interfaces dos `.h` | Mudar a tela (ex.: trocar `conio.h`) ou o mapa não exige reescrever a lógica do jogo. |
 
 ---
 
