@@ -1,85 +1,92 @@
-# 🍔 Cantina CESAR — Fila Zero
+# Fila Zero — app da cantina do CESAR
 
-> FDS 2026.2 · Hackathon Relâmpago #1 · Capítulo 5 (Princípios de Projeto)
-> Prof. Lucas Farias · CESAR School
+Projeto do Hackathon Relâmpago #1 de FDS 2026.2 (Prof. Lucas Farias), sobre os princípios de projeto do capítulo 5 do livro do Marco Tulio Valente.
 
-## O que é o app
+## A ideia
 
-O **Fila Zero** é uma prova de conceito (PoC) de gerenciador da cantina do CESAR. O aluno faz o **pedido antecipado** durante a aula, paga (Pix ou cartão), recebe a **estimativa de espera** e é avisado quando o **pedido está pronto**, então vai ao balcão só para retirar. Assim os 15 minutos do intervalo são usados para comer, não para esperar na fila.
+Todo mundo aqui já perdeu metade do intervalo na fila da cantina e engoliu o lanche no tempo que sobrou. A gente quis resolver isso com algo simples: o aluno pede **ainda na aula**, paga, vê quanto tempo vai demorar e recebe um aviso quando o pedido fica pronto. No intervalo, só passa no balcão e pega.
 
-**Funcionalidades:** cardápio do dia · pedido antecipado · combos · descontos · pagamento · estimativa de fila · aviso de "pedido pronto".
+O que o app faz hoje:
 
-> PoC: roda no terminal, sem deploy e sem banco de dados (tudo em memória).
+- mostra o cardápio do dia (com um combo);
+- recebe o pedido antecipado;
+- cobra por Pix ou cartão;
+- aplica desconto (tem duas regras de exemplo);
+- estima o tempo de espera de acordo com a fila;
+- avisa o aluno quando o pedido está pronto.
 
-## Equipe e papéis
+É uma prova de conceito, então roda no terminal, não tem banco de dados (tudo fica em memória) e os pagamentos são simulados. Nosso foco foi a organização do código, não a tela.
 
-| Integrante | Papel |
-|---|---|
-| João Victor Lima | Arquitetura e núcleo do domínio: `interfaces.py`, `models.py` e `servico.py` |
-| João Guilherme | Pagamentos, descontos e avisos ao aluno: `pagamentos.py`, `descontos.py` e `notificadores.py` |
-| Rodrigo Alves | Cardápio, combos e fila com estimativa de espera: `cardapio.py` e `fila.py` |
-| Danilo Barros | Testes dos princípios, `main.py` (demo), README e vídeo de demonstração |
+## Quem fez o quê
 
-## Decisões de Stack
+- **João Victor Lima:** desenhou a arquitetura e cuidou do núcleo do domínio (`interfaces.py`, `models.py` e `servico.py`).
+- **João Guilherme:** ficou com pagamentos, descontos e avisos (`pagamentos.py`, `descontos.py` e `notificadores.py`).
+- **Rodrigo Alves:** fez o cardápio, os combos e a fila com a estimativa de espera (`cardapio.py` e `fila.py`).
+- **Danilo Barros:** escreveu os testes, a demo (`main.py`), este README e gravou o vídeo.
 
-| Item | Escolha | Por quê |
-|---|---|---|
-| Linguagem | Python 3 | Rápido de prototipar e fácil de ler na demonstração |
-| Dependências | Nenhuma (só biblioteca padrão) | Qualquer pessoa roda sem instalar nada |
-| Interface | Terminal (demo em `main.py`) | Foco no projeto do código, não na tela |
-| Persistência | Em memória | Escopo de PoC, sem banco real |
-| Testes | `unittest` | Já vem com o Python |
-| IA | Usada para gerar o código | A equipe define o projeto e explica as decisões |
+## Por que essa stack
+
+- **Python 3**, porque dá para prototipar rápido e o código fica fácil de ler na hora de explicar.
+- **Sem bibliotecas externas.** Só a biblioteca padrão, então ninguém precisa instalar nada para rodar.
+- **Terminal** como interface, para não gastar a aula com tela e focar no projeto.
+- **unittest** para os testes, que já vem com o Python.
+- **IA** ajudou a escrever o código (a atividade liberou), mas as decisões de projeto e as explicações são nossas.
 
 ## Como rodar
 
-Requisito: **Python 3.10+**
+Precisa do Python 3.10 ou mais novo.
 
 ```bash
 git clone <URL-DO-REPOSITORIO>
 cd cantina-cesar
 
-python main.py                 # demo do fluxo completo
-python -m unittest discover    # testes dos princípios
+python main.py                 # roda a demo com dois alunos fazendo pedido
+python -m unittest discover    # roda os testes
 ```
 
-## Onde estão os princípios (Cap. 5)
+## Onde estão os princípios do capítulo 5
 
-| Princípio | Onde está | Por que deixa o projeto melhor |
-|---|---|---|
-| **Responsabilidade Única** | `cantina/cardapio.py`, `cantina/fila.py`, `cantina/pagamentos.py` | Cada classe tem um só motivo para mudar: `Cardapio` só sabe o que se vende, `FilaCantina` só ordena e estima espera, cada pagamento só cobra. |
-| **Ocultamento de Informação** | `Pedido` em `cantina/models.py` | A lista de itens (`_itens`) e o status (`_status`) são privados. Só mudam por `adicionar()`, `confirmar()` e `marcar_pronto()`, e um pedido confirmado não pode mais ser alterado. |
-| **Inversão de Dependências** | `ServicoPedidos` em `cantina/servico.py` | O serviço recebe `MeioPagamento`, `Notificador`, `Desconto` e `FilaCantina` pelo construtor e depende das abstrações em `interfaces.py`. Quem escolhe as implementações é o `main.py`. |
-| **Segregação de Interfaces** | `cantina/interfaces.py` | Três interfaces com um método cada (`Notificador`, `MeioPagamento`, `Desconto`). Nenhuma classe é obrigada a implementar o que não usa. |
-| **Aberto/Fechado** | `cantina/descontos.py` | `DescontoTresOuMais` e `DescontoFidelidade` entram como classes novas, sem alterar `ServicoPedidos` nem outros descontos. |
-| **Substituição de Liskov** | `PagamentoPix` e `PagamentoCartao` | Um substitui o outro sem quebrar o serviço, com o mesmo contrato (`pagar(valor) -> bool`). Há teste para isso. |
-| **Composição em vez de herança** | `Combo` em `cantina/models.py` | O combo *tem* itens (`itens: tuple`) em vez de herdar de `ItemCardapio`, e calcula preço e tempo de preparo a partir deles. |
-| **Lei de Demeter** | `ServicoPedidos.fazer_pedido` | Fala só com o `Pedido` (`subtotal()`, `qtd_itens()`), sem navegar pelos itens internos. |
-| **Coesão / Baixo acoplamento** | pacote `cantina/` | Módulos pequenos e focados, ligados só por interfaces. |
-| **Integridade Conceitual** | todo o projeto | Mesmo vocabulário (Pedido, Cardápio, Fila) e mesmo padrão (dependências injetadas) em todos os arquivos. |
+Aqui está o que a gente aplicou de verdade, onde achar no código e por que melhorou o projeto.
 
-## Estrutura
+**Responsabilidade Única.** Cada classe tem um motivo só para mudar. O `Cardapio` só sabe o que a cantina vende, a `FilaCantina` só cuida da ordem e da estimativa de espera, e cada forma de pagamento só cobra. Ficou fácil mexer em uma parte sem quebrar as outras. (`cardapio.py`, `fila.py`, `pagamentos.py`)
+
+**Ocultamento de Informação.** No `Pedido` (`models.py`), a lista de itens e o status são privados. Quem quiser mudar algo tem que passar por `adicionar()`, `confirmar()` ou `marcar_pronto()`. Com isso dá para garantir uma regra: depois de confirmado, o pedido não pode mais ser alterado.
+
+**Inversão de Dependências.** O `ServicoPedidos` (`servico.py`) não sabe se o pagamento é Pix ou cartão, nem como o aluno é avisado. Ele recebe tudo pelo construtor, como abstrações definidas em `interfaces.py`. Quem escolhe as implementações concretas é o `main.py`, e trocar uma delas é mudar uma linha.
+
+**Segregação de Interfaces.** Em vez de uma interface gigante, são três pequenas com um método cada: `Notificador`, `MeioPagamento` e `Desconto`. Nenhuma classe é obrigada a implementar o que não usa.
+
+**Aberto/Fechado.** Em `descontos.py`, o `DescontoTresOuMais` foi adicionado depois como uma classe nova, sem mexer no serviço nem nos outros descontos. Para criar uma regra nova, é só escrever outra classe.
+
+**Substituição de Liskov.** `PagamentoPix` e `PagamentoCartao` seguem o mesmo contrato (`pagar(valor)` devolve `True` ou `False`), então um entra no lugar do outro sem o serviço perceber. Tem um teste só para isso.
+
+**Composição em vez de herança.** O `Combo` (`models.py`) *tem* itens, não *é* um item. O preço e o tempo de preparo dele são calculados a partir dos itens que o compõem.
+
+**Lei de Demeter.** O `ServicoPedidos` conversa só com o `Pedido` (`subtotal()`, `qtd_itens()`) e não fica abrindo o pedido para mexer nos itens por dentro.
+
+**Coesão, acoplamento e integridade conceitual.** Os módulos são pequenos, cada um sobre um assunto só, e se ligam por interfaces. O vocabulário (Pedido, Cardápio, Fila) e o jeito de injetar dependências são os mesmos em todo o projeto.
+
+## Estrutura das pastas
 
 ```
 cantina-cesar/
-├── main.py                  # composition root + demo
+├── main.py                  # monta tudo e roda a demo
 ├── cantina/
 │   ├── interfaces.py        # Notificador, MeioPagamento, Desconto
 │   ├── models.py            # ItemCardapio, Combo, Pedido, Status
-│   ├── cardapio.py          # cardápio do dia
-│   ├── descontos.py         # regras de desconto
-│   ├── pagamentos.py        # Pix e cartão
-│   ├── notificadores.py     # avisos ao aluno
-│   ├── fila.py              # fila e estimativa de espera
-│   └── servico.py           # orquestra o pedido
+│   ├── cardapio.py
+│   ├── descontos.py
+│   ├── pagamentos.py
+│   ├── notificadores.py
+│   ├── fila.py
+│   └── servico.py
 └── tests/test_principios.py
 ```
 
-## Vídeo de demonstração
+## Vídeo
 
-> Link do vídeo (até 3 min): **COLE AQUI**
+Link do vídeo (até 3 minutos): **COLE AQUI**
 
-## Observações
+## Sobre as entregas
 
-- Entrega 1 (versão go-horse): repositório congelado após a aula de 29/10.
-- A PoC final será entregue em outro repositório até 04/11.
+Esta é a Entrega 1, a versão "go-horse" feita em sala. O repositório não vai mais ser editado depois da aula de 29/10. A PoC final vai em outro repositório, até 04/11.
