@@ -1,109 +1,85 @@
-# 🍔 Cantina CESAR — [NOME DO APP]
+# 🍔 Cantina CESAR — Fila Zero
 
 > FDS 2026.2 · Hackathon Relâmpago #1 · Capítulo 5 (Princípios de Projeto)
 > Prof. Lucas Farias · CESAR School
 
-App para gerenciar a cantina do CESAR e fazer os **15 minutos de intervalo** do aluno renderem: menos fila, mais lanche.
+## O que é o app
 
----
+O **Fila Zero** é uma prova de conceito (PoC) de gerenciador da cantina do CESAR. O aluno faz o **pedido antecipado** durante a aula, paga (Pix ou cartão), recebe a **estimativa de espera** e é avisado quando o **pedido está pronto**, então vai ao balcão só para retirar. Assim os 15 minutos do intervalo são usados para comer, não para esperar na fila.
 
-## 👥 Equipe e papéis
+**Funcionalidades:** cardápio do dia · pedido antecipado · combos · descontos · pagamento · estimativa de fila · aviso de "pedido pronto".
+
+> PoC: roda no terminal, sem deploy e sem banco de dados (tudo em memória).
+
+## Equipe e papéis
 
 | Integrante | Papel |
 |---|---|
-| João Victor Queiroz Medeiros Goularte | [PREENCHER: ex. backend / lógica de pedidos] |
-| [Nome] | [PREENCHER: ex. interface / CLI] |
-| [Nome] | [PREENCHER: ex. testes / README / vídeo] |
+| João Victor Lima | Arquitetura e núcleo do domínio: `interfaces.py`, `models.py` e `servico.py` |
+| João Guilherme | Pagamentos, descontos e avisos ao aluno: `pagamentos.py`, `descontos.py` e `notificadores.py` |
+| Rodrigo Alves | Cardápio, combos e fila com estimativa de espera: `cardapio.py` e `fila.py` |
+| Danilo Barros | Testes dos princípios, `main.py` (demo), README e vídeo de demonstração |
 
----
-
-## 💡 O que é o app
-
-[PREENCHER em 2–4 linhas. Exemplo:]
-Prova de conceito (PoC) em que o aluno consulta o cardápio do dia, faz o **pedido antecipado** durante a aula e é avisado quando o **pedido está pronto**, retirando o lanche direto no balcão, sem fila.
-
-**Funcionalidades:**
-- [ ] Cardápio do dia
-- [ ] Pedido antecipado
-- [ ] Aviso de "pedido pronto"
-- [ ] [Outras: estimativa de fila, combos, pagamento, fidelidade...]
-
-> ⚠️ É uma PoC: sem deploy e sem banco de dados real (dados em memória).
-
----
-
-## 🛠️ Decisões de Stack
+## Decisões de Stack
 
 | Item | Escolha | Por quê |
 |---|---|---|
-| Linguagem | [ex. Python 3.12] | [ex. rapidez para prototipar na aula] |
-| Interface | [ex. terminal / web / mobile] | [motivo] |
+| Linguagem | Python 3 | Rápido de prototipar e fácil de ler na demonstração |
+| Dependências | Nenhuma (só biblioteca padrão) | Qualquer pessoa roda sem instalar nada |
+| Interface | Terminal (demo em `main.py`) | Foco no projeto do código, não na tela |
 | Persistência | Em memória | Escopo de PoC, sem banco real |
-| IA usada | [ex. Claude / Copilot / ChatGPT] | Código gerado com apoio de IA; decisões de projeto e explicações são da equipe |
+| Testes | `unittest` | Já vem com o Python |
+| IA | Usada para gerar o código | A equipe define o projeto e explica as decisões |
 
----
+## Como rodar
 
-## ▶️ Como rodar
+Requisito: **Python 3.10+**
 
 ```bash
-# 1. Clonar
-git clone [URL-DO-REPOSITORIO]
-cd [NOME-DA-PASTA]
+git clone <URL-DO-REPOSITORIO>
+cd cantina-cesar
 
-# 2. Instalar dependências (se houver)
-[ex. pip install -r requirements.txt]
-
-# 3. Executar
-[ex. python main.py]
+python main.py                 # demo do fluxo completo
+python -m unittest discover    # testes dos princípios
 ```
 
-**Requisitos:** [ex. Python 3.10+]
+## Onde estão os princípios (Cap. 5)
 
----
-
-## 🧭 Onde estão os princípios (Cap. 5)
-
-> Cada princípio abaixo aponta para o arquivo/trecho onde ele aparece de verdade e explica por que o projeto ficou melhor.
-
-| Princípio | Onde está no código | Por que melhora o projeto |
+| Princípio | Onde está | Por que deixa o projeto melhor |
 |---|---|---|
-| **Responsabilidade Única (SRP)** | `[arquivo.ext]` → `[Classe]` | [ex. `Pedido` só cuida de dados do pedido; cálculo de preço fica em outra classe] |
-| **Ocultamento de Informação** | `[arquivo.ext]` → `[Classe]` | [ex. atributos privados; estado só muda por métodos da classe] |
-| **Acoplamento baixo** | `[arquivo.ext]` | [ex. módulos se falam só por interfaces simples] |
-| **Coesão** | `[arquivo.ext]` | [ex. cada módulo reúne só o que pertence a um mesmo assunto] |
-| **Inversão de Dependências** | `[arquivo.ext]` | [ex. `ServicoPedido` depende de uma abstração `Notificador`, não de uma implementação concreta] |
-| **Segregação de Interfaces** | `[arquivo.ext]` | [ex. interfaces pequenas: `Pagavel`, `Notificavel`] |
-| **Composição em vez de herança** | `[arquivo.ext]` | [ex. `Combo` é composto de itens em vez de herdar de `Produto`] |
-| **Aberto/Fechado (OCP)** | `[arquivo.ext]` | [ex. novo tipo de desconto sem alterar código existente] |
-| **Substituição de Liskov** | `[arquivo.ext]` | [ex. qualquer `Notificador` pode substituir outro sem quebrar o fluxo] |
-| **Lei de Demeter** | `[arquivo.ext]` | [ex. evitamos `a.getB().getC().faz()`] |
-| **Integridade Conceitual** | geral | [ex. mesmo vocabulário e padrão em todo o código] |
+| **Responsabilidade Única** | `cantina/cardapio.py`, `cantina/fila.py`, `cantina/pagamentos.py` | Cada classe tem um só motivo para mudar: `Cardapio` só sabe o que se vende, `FilaCantina` só ordena e estima espera, cada pagamento só cobra. |
+| **Ocultamento de Informação** | `Pedido` em `cantina/models.py` | A lista de itens (`_itens`) e o status (`_status`) são privados. Só mudam por `adicionar()`, `confirmar()` e `marcar_pronto()`, e um pedido confirmado não pode mais ser alterado. |
+| **Inversão de Dependências** | `ServicoPedidos` em `cantina/servico.py` | O serviço recebe `MeioPagamento`, `Notificador`, `Desconto` e `FilaCantina` pelo construtor e depende das abstrações em `interfaces.py`. Quem escolhe as implementações é o `main.py`. |
+| **Segregação de Interfaces** | `cantina/interfaces.py` | Três interfaces com um método cada (`Notificador`, `MeioPagamento`, `Desconto`). Nenhuma classe é obrigada a implementar o que não usa. |
+| **Aberto/Fechado** | `cantina/descontos.py` | `DescontoTresOuMais` e `DescontoFidelidade` entram como classes novas, sem alterar `ServicoPedidos` nem outros descontos. |
+| **Substituição de Liskov** | `PagamentoPix` e `PagamentoCartao` | Um substitui o outro sem quebrar o serviço, com o mesmo contrato (`pagar(valor) -> bool`). Há teste para isso. |
+| **Composição em vez de herança** | `Combo` em `cantina/models.py` | O combo *tem* itens (`itens: tuple`) em vez de herdar de `ItemCardapio`, e calcula preço e tempo de preparo a partir deles. |
+| **Lei de Demeter** | `ServicoPedidos.fazer_pedido` | Fala só com o `Pedido` (`subtotal()`, `qtd_itens()`), sem navegar pelos itens internos. |
+| **Coesão / Baixo acoplamento** | pacote `cantina/` | Módulos pequenos e focados, ligados só por interfaces. |
+| **Integridade Conceitual** | todo o projeto | Mesmo vocabulário (Pedido, Cardápio, Fila) e mesmo padrão (dependências injetadas) em todos os arquivos. |
 
-*(Mantenham só os princípios que realmente aplicaram e removam o resto da tabela.)*
-
----
-
-## 📁 Estrutura do projeto
+## Estrutura
 
 ```
-[NOME-DA-PASTA]/
-├── README.md
-├── [src/ ou raiz]
-│   ├── [arquivo1]   # [responsabilidade]
-│   ├── [arquivo2]   # [responsabilidade]
-│   └── [arquivo3]   # [responsabilidade]
-└── [tests/ (opcional)]
+cantina-cesar/
+├── main.py                  # composition root + demo
+├── cantina/
+│   ├── interfaces.py        # Notificador, MeioPagamento, Desconto
+│   ├── models.py            # ItemCardapio, Combo, Pedido, Status
+│   ├── cardapio.py          # cardápio do dia
+│   ├── descontos.py         # regras de desconto
+│   ├── pagamentos.py        # Pix e cartão
+│   ├── notificadores.py     # avisos ao aluno
+│   ├── fila.py              # fila e estimativa de espera
+│   └── servico.py           # orquestra o pedido
+└── tests/test_principios.py
 ```
 
----
+## Vídeo de demonstração
 
-## 🎥 Vídeo de demonstração
+> Link do vídeo (até 3 min): **COLE AQUI**
 
-[LINK DO VÍDEO — até 3 minutos, com narração ou legenda, mostrando o app funcionando e explicando os princípios]
+## Observações
 
----
-
-## 📝 Observações
-
-- Repositório **congelado após a aula de 29/10** (Entrega 1: versão go-horse).
-- A versão definitiva (PoC final) será entregue em **outro repositório** até **04/11**.
+- Entrega 1 (versão go-horse): repositório congelado após a aula de 29/10.
+- A PoC final será entregue em outro repositório até 04/11.
