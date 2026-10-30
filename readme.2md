@@ -1,0 +1,109 @@
+# 🍔 Cantina CESAR — [NOME DO APP]
+
+> FDS 2026.2 · Hackathon Relâmpago #1 · Capítulo 5 (Princípios de Projeto)
+> Prof. Lucas Farias · CESAR School
+
+App para gerenciar a cantina do CESAR e fazer os **15 minutos de intervalo** do aluno renderem: menos fila, mais lanche.
+
+---
+
+## 👥 Equipe e papéis
+
+| Integrante | Papel |
+|---|---|
+| João Victor Queiroz Medeiros Goularte | [PREENCHER: ex. backend / lógica de pedidos] |
+| [Nome] | [PREENCHER: ex. interface / CLI] |
+| [Nome] | [PREENCHER: ex. testes / README / vídeo] |
+
+---
+
+## 💡 O que é o app
+
+[PREENCHER em 2–4 linhas. Exemplo:]
+Prova de conceito (PoC) em que o aluno consulta o cardápio do dia, faz o **pedido antecipado** durante a aula e é avisado quando o **pedido está pronto**, retirando o lanche direto no balcão, sem fila.
+
+**Funcionalidades:**
+- [ ] Cardápio do dia
+- [ ] Pedido antecipado
+- [ ] Aviso de "pedido pronto"
+- [ ] [Outras: estimativa de fila, combos, pagamento, fidelidade...]
+
+> ⚠️ É uma PoC: sem deploy e sem banco de dados real (dados em memória).
+
+---
+
+## 🛠️ Decisões de Stack
+
+| Item | Escolha | Por quê |
+|---|---|---|
+| Linguagem | [ex. Python 3.12] | [ex. rapidez para prototipar na aula] |
+| Interface | [ex. terminal / web / mobile] | [motivo] |
+| Persistência | Em memória | Escopo de PoC, sem banco real |
+| IA usada | [ex. Claude / Copilot / ChatGPT] | Código gerado com apoio de IA; decisões de projeto e explicações são da equipe |
+
+---
+
+## ▶️ Como rodar
+
+```bash
+# 1. Clonar
+git clone [URL-DO-REPOSITORIO]
+cd [NOME-DA-PASTA]
+
+# 2. Instalar dependências (se houver)
+[ex. pip install -r requirements.txt]
+
+# 3. Executar
+[ex. python main.py]
+```
+
+**Requisitos:** [ex. Python 3.10+]
+
+---
+
+## 🧭 Onde estão os princípios (Cap. 5)
+
+> Cada princípio abaixo aponta para o arquivo/trecho onde ele aparece de verdade e explica por que o projeto ficou melhor.
+
+| Princípio | Onde está no código | Por que melhora o projeto |
+|---|---|---|
+| **Responsabilidade Única (SRP)** | `[arquivo.ext]` → `[Classe]` | [ex. `Pedido` só cuida de dados do pedido; cálculo de preço fica em outra classe] |
+| **Ocultamento de Informação** | `[arquivo.ext]` → `[Classe]` | [ex. atributos privados; estado só muda por métodos da classe] |
+| **Acoplamento baixo** | `[arquivo.ext]` | [ex. módulos se falam só por interfaces simples] |
+| **Coesão** | `[arquivo.ext]` | [ex. cada módulo reúne só o que pertence a um mesmo assunto] |
+| **Inversão de Dependências** | `[arquivo.ext]` | [ex. `ServicoPedido` depende de uma abstração `Notificador`, não de uma implementação concreta] |
+| **Segregação de Interfaces** | `[arquivo.ext]` | [ex. interfaces pequenas: `Pagavel`, `Notificavel`] |
+| **Composição em vez de herança** | `[arquivo.ext]` | [ex. `Combo` é composto de itens em vez de herdar de `Produto`] |
+| **Aberto/Fechado (OCP)** | `[arquivo.ext]` | [ex. novo tipo de desconto sem alterar código existente] |
+| **Substituição de Liskov** | `[arquivo.ext]` | [ex. qualquer `Notificador` pode substituir outro sem quebrar o fluxo] |
+| **Lei de Demeter** | `[arquivo.ext]` | [ex. evitamos `a.getB().getC().faz()`] |
+| **Integridade Conceitual** | geral | [ex. mesmo vocabulário e padrão em todo o código] |
+
+*(Mantenham só os princípios que realmente aplicaram e removam o resto da tabela.)*
+
+---
+
+## 📁 Estrutura do projeto
+
+```
+[NOME-DA-PASTA]/
+├── README.md
+├── [src/ ou raiz]
+│   ├── [arquivo1]   # [responsabilidade]
+│   ├── [arquivo2]   # [responsabilidade]
+│   └── [arquivo3]   # [responsabilidade]
+└── [tests/ (opcional)]
+```
+
+---
+
+## 🎥 Vídeo de demonstração
+
+[LINK DO VÍDEO — até 3 minutos, com narração ou legenda, mostrando o app funcionando e explicando os princípios]
+
+---
+
+## 📝 Observações
+
+- Repositório **congelado após a aula de 29/10** (Entrega 1: versão go-horse).
+- A versão definitiva (PoC final) será entregue em **outro repositório** até **04/11**.
