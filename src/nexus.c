@@ -2,7 +2,7 @@
  * ============================================================================
  *  NEXUS - Jogo educativo de aventura e exploracao no terminal
  *  Projeto Integrador - CESAR School
- *  Versao parcial (parte 1): Menu + instrucoes + mapas e movimentacao
+ *  Versao parcial (parte 2): Menu + mapas + interacao + Fase 1 (Central da Verdade)
  *  Plataforma: Windows (terminal integrado do VS Code)
  * ============================================================================
  *
@@ -234,6 +234,10 @@ int main(void) {
 
     /* ---------------- Progresso da Fase 1 ---------------- */
     int pistaEncontrada = 0;             /* jogador ja leu a pista?         */
+    int etapaComputador1 = 0;            /* 0 = julgar p, 1 = julgar ~p     */
+    int linhaTabela = 0;                 /* linha atual da tabela no C2     */
+    int computador1Resolvido = 0;
+    int computador2Resolvido = 0;
     int portaAberta = 0;                 /* porta D: C1 E C2 resolvidos     */
 
     /* ---------------- Progresso da Fase 3 ---------------- */
@@ -260,6 +264,13 @@ int main(void) {
     char celula;                         /* simbolo calculado da posicao    */
     char celulaDestino = CHAO;           /* simbolo na casa de destino      */
 
+    /* ---------------- Interacao e computadores ---------------- */
+    int objeto, objetoProximo;
+    int objetoLinha, objetoColuna, objetoLargura;
+    int objetoAtivo, pertoDoObjeto;
+    char respostaEsperada;
+    int linhaExibida, valorP, valorQ;    /* linhas da tabela-verdade        */
+
     /* ---------------- Preparacao do terminal (aparencia) ---------------- */
     system("chcp 65001 > nul");   /* terminal passa a exibir Unicode (UTF-8)    */
     system("");                   /* garante o suporte a cores ANSI no Windows  */
@@ -284,6 +295,10 @@ int main(void) {
             chaveDaPrivacidade = 0;
             chaveDaJustica = 0;
             pistaEncontrada = 0;
+            etapaComputador1 = 0;
+            linhaTabela = 0;
+            computador1Resolvido = 0;
+            computador2Resolvido = 0;
             portaAberta = 0;
             pista3Encontrada = 0;
             tentouMover = 0;
@@ -348,6 +363,8 @@ int main(void) {
             printf("  Basta apertar a tecla (nao e preciso apertar ENTER).\n\n");
             printf("    W - Cima            S - Baixo\n");
             printf("    A - Esquerda        D - Direita\n");
+            printf("    E - Interagir com um objeto proximo\n");
+            printf("    I - Inventario\n");
             printf("    Q - Sair\n\n");
             printf("  Simbolos do mapa:\n");
             printf("    " COR_JOGADOR SIMBOLO_JOGADOR COR_RESET " jogador   "
@@ -366,7 +383,19 @@ int main(void) {
             /* ---------- MAPA (US03 e US04) ---------- */
             /* Objetivo atual: muda conforme a fase e o progresso */
             printf("  " COR_TITULO "Objetivo: " COR_RESET);
-            printf("explore o mapa.\n\n");
+            if (faseAtual == FASE_VERDADE) {
+                if (!pistaEncontrada) {
+                    printf("explore a sala e encontre a pista (?).\n\n");
+                } else if (!computador1Resolvido) {
+                    printf("investigue o computador C1.\n\n");
+                } else if (!computador2Resolvido) {
+                    printf("corrija o filtro do computador C2.\n\n");
+                } else {
+                    printf("a porta D esta aberta! Pegue a chave K.\n\n");
+                }
+            } else {
+                printf("explore o mapa.\n\n");
+            }
 
             /*
              * O mapa e percorrido DUAS vezes com as MESMAS regras (DRY):
@@ -516,7 +545,98 @@ int main(void) {
                    COR_PORTA_ABERTA "/" COR_RESET " porta aberta  "
                    COR_OURO "K" COR_RESET " chave\n");
             printf(LINHA_FINA);
-            printf("  " COR_TECLA "[W A S D]" COR_RESET " mover  " COR_TECLA "[Q]" COR_RESET " sair\n");
+            printf("  " COR_TECLA "[W A S D]" COR_RESET " mover  " COR_TECLA "[E]" COR_RESET " interagir  " COR_TECLA "[I]" COR_RESET " inventario  " COR_TECLA "[Q]" COR_RESET " sair\n");
+
+        } else if (telaAtual == TELA_PISTA) {
+            /* ---------- FASE 1: PISTA (US05) ---------- */
+            printf("  " COR_OK "PISTA ENCONTRADA!" COR_RESET "\n\n");
+            printf("  Um bilhete do tecnico de plantao diz:\n\n");
+            printf("     \"O servidor principal foi desligado as 22h.\"\n\n");
+            printf("  Guarde essa informacao: a IA NEXUS pode afirmar o\n");
+            printf("  contrario. Quando uma IA afirma algo falso como se\n");
+            printf("  fosse verdade, chamamos isso de ALUCINACAO.\n\n");
+            printf("  Investigue o computador C1.\n\n");
+            printf("  " COR_TECLA "[E]" COR_RESET " Continuar\n");
+
+        } else if (telaAtual == TELA_COMPUTADOR1) {
+            /* ---------- FASE 1: COMPUTADOR C1 - afirmacoes da IA (US06) ---------- */
+            printf("  " COR_TITULO "COMPUTADOR C1 - AFIRMACOES DA IA NEXUS" COR_RESET "\n");
+            printf(LINHA_FINA);
+            printf("  Pista: \"O servidor principal foi desligado as 22h.\"\n\n");
+            printf("  A IA NEXUS afirma:\n");
+            printf("   p : \"O servidor principal esta ligado.\"\n");
+            printf("       Valor logico: %c\n", etapaComputador1 > 0 ? 'F' : '?');
+            printf("   ~p: \"Nao e verdade que o servidor principal\n");
+            printf("        esta ligado.\"\n");
+            printf("       Valor logico: %c\n\n", etapaComputador1 > 1 ? 'V' : '?');
+
+            if (etapaComputador1 == 0) {
+                printf("  Qual o valor logico de p?\n");
+                printf("  " COR_TECLA "[V]" COR_RESET " Verdadeiro  " COR_TECLA "[F]" COR_RESET " Falso  " COR_TECLA "[Q]" COR_RESET " Sair do computador\n");
+            } else if (etapaComputador1 == 1) {
+                printf("  Qual o valor logico de ~p (negacao de p)?\n");
+                printf("  " COR_TECLA "[V]" COR_RESET " Verdadeiro  " COR_TECLA "[F]" COR_RESET " Falso  " COR_TECLA "[Q]" COR_RESET " Sair do computador\n");
+            } else {
+                printf("  SISTEMA CORRIGIDO! A afirmacao p era uma ALUCINACAO:\n");
+                printf("  parecia certa, mas contradiz a pista.\n\n");
+                printf("  " COR_TECLA "[E]" COR_RESET " Voltar ao mapa\n");
+            }
+
+        } else if (telaAtual == TELA_COMPUTADOR2) {
+            /* ---------- FASE 1: COMPUTADOR C2 - filtro de confianca (US07) ---------- */
+            printf("  " COR_TITULO "COMPUTADOR C2 - FILTRO DE CONFIANCA" COR_RESET "\n");
+            printf(LINHA_FINA);
+            printf("  Uma resposta da IA so e CONFIAVEL se:\n");
+            printf("    p = \"a resposta cita uma fonte\"\n");
+            printf("    q = \"o dado confere com as pistas\"\n");
+            printf("    confiavel = p ^ q   (conjuncao \"E\"; em C: p && q)\n\n");
+            printf("  Complete a ultima coluna da tabela-verdade:\n\n");
+            printf("       p | q | p ^ q\n");
+            printf("      ---+---+-------\n");
+            for (linhaExibida = 0; linhaExibida < LINHAS_TABELA; linhaExibida++) {
+                valorP = (linhaExibida < 2);           /* linhas 0 e 1: p = V */
+                valorQ = (linhaExibida % 2 == 0);      /* linhas pares: q = V */
+                printf("       %c | %c |   ", valorP ? 'V' : 'F', valorQ ? 'V' : 'F');
+                if (linhaExibida < linhaTabela) {
+                    printf("%c\n", (valorP && valorQ) ? 'V' : 'F');   /* ja respondida */
+                } else if (linhaExibida == linhaTabela) {
+                    printf("?   <- sua vez\n");
+                } else {
+                    printf("?\n");
+                }
+            }
+
+            if (linhaTabela < LINHAS_TABELA) {
+                printf("\n  Qual o valor de p ^ q nessa linha?\n");
+                printf("  " COR_TECLA "[V]" COR_RESET " Verdadeiro  " COR_TECLA "[F]" COR_RESET " Falso  " COR_TECLA "[Q]" COR_RESET " Sair do computador\n");
+            } else {
+                printf("\n  FILTRO CORRIGIDO! A porta D foi destrancada.\n\n");
+                printf("  " COR_TECLA "[E]" COR_RESET " Voltar ao mapa\n");
+            }
+
+        } else if (telaAtual == TELA_INVENTARIO) {
+            /* ---------- INVENTARIO (tecla I) ---------- */
+            printf("  " COR_TITULO "INVENTARIO" COR_RESET "\n");
+            printf(LINHA_FINA);
+            printf("   %s[%c]" COR_RESET " Chave da Verdade\n",
+                   chaveDaVerdade ? COR_OK : COR_DIM, chaveDaVerdade ? 'X' : ' ');
+            printf("   %s[%c]" COR_RESET " Chave da Privacidade\n",
+                   chaveDaPrivacidade ? COR_OK : COR_DIM, chaveDaPrivacidade ? 'X' : ' ');
+            printf("   %s[%c]" COR_RESET " Chave da Justica\n\n",
+                   chaveDaJustica ? COR_OK : COR_DIM, chaveDaJustica ? 'X' : ' ');
+            printf("  " COR_TECLA "[I]" COR_RESET " Fechar inventario\n");
+
+        } else if (telaAtual == TELA_CHAVE) {
+            /* ---------- CHAVE OBTIDA (US07, US11 e US14) ---------- */
+            if (faseAtual == FASE_VERDADE) {
+                printf("  " COR_OURO "*** CHAVE DA VERDADE OBTIDA! ***" COR_RESET "\n\n");
+                printf("  A Central da Verdade voltou a funcionar.\n\n");
+                printf("  Licao: uma IA pode \"alucinar\" e afirmar algo falso\n");
+                printf("  com confianca. Sempre confira as respostas com\n");
+                printf("  fontes e informacoes confiaveis.\n\n");
+            }
+            printf("  Item adicionado ao inventario.\n\n");
+            printf("  " COR_TECLA "[E]" COR_RESET " Continuar\n");
 
         } else if (telaAtual == TELA_CONFIRMAR_SAIDA) {
             /* ---------- CONFIRMAR SAIDA ---------- */
@@ -544,6 +664,24 @@ int main(void) {
             }
             if (mensagem == MSG_PAREDE) {
                 printf("Caminho bloqueado! Voce nao pode atravessar obstaculos.\n");
+            } else if (mensagem == MSG_NADA_PROXIMO) {
+                printf("Nada para interagir aqui. Chegue perto de ?, C, A, D ou K.\n");
+            } else if (mensagem == MSG_C1_BLOQUEADO) {
+                printf("O computador C1 esta bloqueado. Encontre a pista (?) primeiro.\n");
+            } else if (mensagem == MSG_C2_BLOQUEADO) {
+                printf("Acesso negado ao C2. Primeiro corrija as afirmacoes do C1.\n");
+            } else if (mensagem == MSG_PORTA_TRANCADA) {
+                printf("Porta D trancada: ela so abre se C1 E C2 estiverem corrigidos.\n");
+            } else if (mensagem == MSG_ACERTO) {
+                printf("Correto!\n");
+            } else if (mensagem == MSG_ERRO_P) {
+                printf("Incorreto. A pista diz que o servidor foi DESLIGADO, entao p e Falsa.\n");
+            } else if (mensagem == MSG_ERRO_NAO_P) {
+                printf("Incorreto. A negacao inverte o valor: se p = F, entao ~p = V.\n");
+            } else if (mensagem == MSG_ERRO_TABELA) {
+                printf("Incorreto. p ^ q so e V quando p E q sao V ao mesmo tempo.\n");
+            } else if (mensagem == MSG_PORTA_ABERTA) {
+                printf("Correto! A porta D foi DESTRANCADA.\n");
             }
             printf(COR_RESET);
             mensagem = MSG_NENHUMA;   /* cada mensagem aparece uma unica vez */
@@ -560,7 +698,15 @@ int main(void) {
         } else if (telaAtual == TELA_INSTRUCOES) {
             printf("qualquer tecla\n");
         } else if (telaAtual == TELA_MAPA) {
-            printf("W, A, S, D ou Q\n");
+            printf("W, A, S, D, E, I ou Q\n");
+        } else if (telaAtual == TELA_PISTA || telaAtual == TELA_CHAVE) {
+            printf("E\n");
+        } else if (telaAtual == TELA_COMPUTADOR1) {
+            printf("%s\n", computador1Resolvido ? "E ou Q" : "V, F ou Q");
+        } else if (telaAtual == TELA_COMPUTADOR2) {
+            printf("%s\n", computador2Resolvido ? "E ou Q" : "V, F ou Q");
+        } else if (telaAtual == TELA_INVENTARIO) {
+            printf("I ou Q\n");
         } else {
             printf("S ou N\n");
         }
@@ -593,7 +739,24 @@ int main(void) {
                 entradaValida = 1;
             } else if (telaAtual == TELA_MAPA) {
                 entradaValida = (tecla == 'W' || tecla == 'A' || tecla == 'S' ||
-                                 tecla == 'D' || tecla == 'Q');
+                                 tecla == 'D' || tecla == 'E' || tecla == 'I' ||
+                                 tecla == 'Q');
+            } else if (telaAtual == TELA_PISTA || telaAtual == TELA_CHAVE) {
+                entradaValida = (tecla == 'E');
+            } else if (telaAtual == TELA_COMPUTADOR1) {
+                if (computador1Resolvido) {
+                    entradaValida = (tecla == 'E' || tecla == 'Q');
+                } else {
+                    entradaValida = (tecla == 'V' || tecla == 'F' || tecla == 'Q');
+                }
+            } else if (telaAtual == TELA_COMPUTADOR2) {
+                if (computador2Resolvido) {
+                    entradaValida = (tecla == 'E' || tecla == 'Q');
+                } else {
+                    entradaValida = (tecla == 'V' || tecla == 'F' || tecla == 'Q');
+                }
+            } else if (telaAtual == TELA_INVENTARIO) {
+                entradaValida = (tecla == 'I' || tecla == 'Q');
             } else {
                 entradaValida = (tecla == 'S' || tecla == 'N');
             }
@@ -634,10 +797,133 @@ int main(void) {
                 destinoColuna = jogadorColuna + (tecla == 'D') - (tecla == 'A');
                 tentouMover = 1;
 
+            } else if (tecla == 'E') {
+                /* Interacao: procura um objeto ativo ao redor do jogador.
+                 * Um unico laco testa todos os objetos (DRY); so os objetos
+                 * da fase atual ficam ativos. */
+                objetoProximo = OBJ_NENHUM;
+                for (objeto = 1; objeto <= OBJ_CHAVE; objeto++) {
+                    objetoLargura = 1;
+                    if (objeto == OBJ_PISTA) {
+                        objetoLinha = PISTA_LINHA;
+                        objetoColuna = PISTA_COLUNA;
+                        objetoAtivo = (faseAtual == FASE_VERDADE) && !pistaEncontrada;
+                    } else if (objeto == OBJ_COMPUTADOR1) {
+                        objetoLinha = C1_LINHA;
+                        objetoColuna = C1_COLUNA;
+                        objetoLargura = 2;
+                        objetoAtivo = (faseAtual == FASE_VERDADE);
+                    } else if (objeto == OBJ_COMPUTADOR2) {
+                        objetoLinha = C2_LINHA;
+                        objetoColuna = C2_COLUNA;
+                        objetoLargura = 2;
+                        objetoAtivo = (faseAtual == FASE_VERDADE);
+                    } else if (objeto == OBJ_PORTA) {
+                        objetoLinha = PORTA_LINHA;
+                        objetoColuna = PORTA_COLUNA;
+                        objetoAtivo = (faseAtual == FASE_VERDADE) && !portaAberta;
+                    } else {   /* OBJ_CHAVE */
+                        objetoLinha = CHAVE_LINHA;
+                        objetoColuna = CHAVE_COLUNA;
+                        objetoAtivo = (faseAtual == FASE_VERDADE) && portaAberta && !chaveDaVerdade;
+                    }
+
+                    /* "perto" = em qualquer casa vizinha (inclui diagonais) */
+                    pertoDoObjeto = jogadorLinha >= objetoLinha - 1 &&
+                                    jogadorLinha <= objetoLinha + 1 &&
+                                    jogadorColuna >= objetoColuna - 1 &&
+                                    jogadorColuna <= objetoColuna + objetoLargura;
+
+                    if (objetoProximo == OBJ_NENHUM && objetoAtivo && pertoDoObjeto) {
+                        objetoProximo = objeto;
+                    }
+                }
+
+                /* Reacao ao objeto encontrado, respeitando a ordem de cada fase */
+                if (objetoProximo == OBJ_PISTA) {
+                    pistaEncontrada = 1;
+                    telaAtual = TELA_PISTA;
+                } else if (objetoProximo == OBJ_COMPUTADOR1) {
+                    if (pistaEncontrada) {
+                        telaAtual = TELA_COMPUTADOR1;
+                    } else {
+                        mensagem = MSG_C1_BLOQUEADO;
+                    }
+                } else if (objetoProximo == OBJ_COMPUTADOR2) {
+                    if (computador1Resolvido) {
+                        telaAtual = TELA_COMPUTADOR2;
+                    } else {
+                        mensagem = MSG_C2_BLOQUEADO;
+                    }
+                } else if (objetoProximo == OBJ_PORTA) {
+                    mensagem = MSG_PORTA_TRANCADA;
+                } else if (objetoProximo == OBJ_CHAVE) {
+                    chaveDaVerdade = 1;
+                    telaAtual = TELA_CHAVE;
+                } else {
+                    mensagem = MSG_NADA_PROXIMO;
+                }
+
+            } else if (tecla == 'I') {
+                telaAtual = TELA_INVENTARIO;
             } else {                              /* Q */
                 origemConfirmacao = TELA_MAPA;
                 telaAtual = TELA_CONFIRMAR_SAIDA;
             }
+
+        } else if (telaAtual == TELA_PISTA) {
+            telaAtual = TELA_MAPA;
+
+        } else if (telaAtual == TELA_COMPUTADOR1) {
+            /* Fase 1: julgar p (resposta F) e depois ~p (resposta V) */
+            if (tecla == 'Q' || tecla == 'E') {
+                telaAtual = TELA_MAPA;
+            } else {
+                respostaEsperada = (etapaComputador1 == 0) ? 'F' : 'V';
+                if (tecla == respostaEsperada) {
+                    etapaComputador1++;
+                    mensagem = MSG_ACERTO;
+                    if (etapaComputador1 == ETAPAS_C1) {
+                        computador1Resolvido = 1;
+                    }
+                } else {
+                    mensagem = (etapaComputador1 == 0) ? MSG_ERRO_P : MSG_ERRO_NAO_P;
+                }
+            }
+
+        } else if (telaAtual == TELA_COMPUTADOR2) {
+            /* Fase 1: completar a tabela-verdade de p ^ q, uma linha por vez */
+            if (tecla == 'Q' || tecla == 'E') {
+                telaAtual = TELA_MAPA;
+            } else {
+                valorP = (linhaTabela < 2);
+                valorQ = (linhaTabela % 2 == 0);
+                respostaEsperada = (valorP && valorQ) ? 'V' : 'F';
+                if (tecla == respostaEsperada) {
+                    linhaTabela++;
+                    mensagem = MSG_ACERTO;
+                    if (linhaTabela == LINHAS_TABELA) {
+                        computador2Resolvido = 1;
+                        /* Regra da porta (conjuncao): abre se C1 E C2 corrigidos */
+                        portaAberta = computador1Resolvido && computador2Resolvido;
+                        mensagem = MSG_PORTA_ABERTA;
+                    }
+                } else {
+                    mensagem = MSG_ERRO_TABELA;
+                }
+            }
+
+        } else if (telaAtual == TELA_INVENTARIO) {
+            telaAtual = TELA_MAPA;
+
+        } else if (telaAtual == TELA_CHAVE) {
+            /* Proxima fase: o jogador volta para a posicao inicial */
+            faseAtual++;
+            jogadorLinha = INICIO_LINHA;
+            jogadorColuna = INICIO_COLUNA;
+            destinoLinha = jogadorLinha;
+            destinoColuna = jogadorColuna;
+            telaAtual = TELA_MAPA;
 
         } else if (telaAtual == TELA_CONFIRMAR_SAIDA) {
             /* S confirma; N volta para a tela de origem */
