@@ -2,7 +2,8 @@
  * ============================================================================
  *  NEXUS - Jogo educativo de aventura e exploracao no terminal
  *  Projeto Integrador - CESAR School
- *  Versao parcial (parte 2): Menu + mapas + interacao + Fase 1 (Central da Verdade)
+ *  Versao completa: Menu + Fase 1 (Central da Verdade) + Fase 2 (Setor de
+ *  Privacidade) + Fase 3 (Nucleo da Justica) + Fase Final (Saida)
  *  Plataforma: Windows (terminal integrado do VS Code)
  * ============================================================================
  *
@@ -231,6 +232,7 @@ int main(void) {
     int chaveDaVerdade = 0;              /* 1 = chave obtida, 0 = nao       */
     int chaveDaPrivacidade = 0;
     int chaveDaJustica = 0;
+    int respostasIncorretas = 0;         /* usado no resumo final           */
 
     /* ---------------- Progresso da Fase 1 ---------------- */
     int pistaEncontrada = 0;             /* jogador ja leu a pista?         */
@@ -240,11 +242,18 @@ int main(void) {
     int computador2Resolvido = 0;
     int portaAberta = 0;                 /* porta D: C1 E C2 resolvidos     */
 
+    /* ---------------- Progresso da Fase 2 ---------------- */
+    int codigoEncontrado = 0;            /* jogador guardou o codigo?       */
+    int codigoDigitado = 0;              /* numero formado pelos digitos    */
+    int digitosDigitados = 0;            /* quantos digitos ja foram teclados */
+
     /* ---------------- Progresso da Fase 3 ---------------- */
     int pista3Encontrada = 0;
+    int resultadosVistos = 0;            /* jogador ja viu o computador C2? */
 
     /* ---------------- Controle do jogo ---------------- */
     int telaAtual = TELA_MENU;           /* tela exibida neste momento      */
+    int telaRetorno = TELA_MAPA;         /* para onde o aviso de privacidade volta */
     int origemConfirmacao = TELA_MENU;   /* de onde veio o pedido de saida  */
     int reiniciarJogo = 0;               /* 1 = zerar o progresso do jogo   */
     int mensagem = MSG_NENHUMA;          /* mensagem do rodape              */
@@ -270,6 +279,7 @@ int main(void) {
     int objetoAtivo, pertoDoObjeto;
     char respostaEsperada;
     int linhaExibida, valorP, valorQ;    /* linhas da tabela-verdade        */
+    int todasAsChaves;                   /* 1 = as tres chaves foram obtidas */
 
     /* ---------------- Preparacao do terminal (aparencia) ---------------- */
     system("chcp 65001 > nul");   /* terminal passa a exibir Unicode (UTF-8)    */
@@ -294,17 +304,24 @@ int main(void) {
             chaveDaVerdade = 0;
             chaveDaPrivacidade = 0;
             chaveDaJustica = 0;
+            respostasIncorretas = 0;
             pistaEncontrada = 0;
             etapaComputador1 = 0;
             linhaTabela = 0;
             computador1Resolvido = 0;
             computador2Resolvido = 0;
             portaAberta = 0;
+            codigoEncontrado = 0;
+            codigoDigitado = 0;
+            digitosDigitados = 0;
             pista3Encontrada = 0;
+            resultadosVistos = 0;
             tentouMover = 0;
             mensagem = MSG_NENHUMA;
             reiniciarJogo = 0;
         }
+
+        todasAsChaves = chaveDaVerdade && chaveDaPrivacidade && chaveDaJustica;
 
         /* ------------------------------------------------------------------
          * (B) DESENHO DA TELA ATUAL
@@ -393,8 +410,22 @@ int main(void) {
                 } else {
                     printf("a porta D esta aberta! Pegue a chave K.\n\n");
                 }
+            } else if (faseAtual == FASE_PRIVACIDADE) {
+                if (!codigoEncontrado) {
+                    printf("procure o codigo de acesso nos arquivos (A).\n\n");
+                } else {
+                    printf("use o codigo no computador bloqueado (C).\n\n");
+                }
+            } else if (faseAtual == FASE_JUSTICA) {
+                if (!pista3Encontrada) {
+                    printf("encontre a pista (?).\n\n");
+                } else if (!resultadosVistos) {
+                    printf("veja os resultados no computador C2.\n\n");
+                } else {
+                    printf("corrija o sistema de decisao no computador C1.\n\n");
+                }
             } else {
-                printf("explore o mapa.\n\n");
+                printf("va ate a porta D e abra a saida.\n\n");
             }
 
             /*
@@ -614,6 +645,87 @@ int main(void) {
                 printf("  " COR_TECLA "[E]" COR_RESET " Voltar ao mapa\n");
             }
 
+        } else if (telaAtual == TELA_ARQUIVO) {
+            /* ---------- FASE 2: ARQUIVO A1 (US08 e US10) ---------- */
+            printf("  " COR_TITULO "ARQUIVO A1 - acesso_sistema.txt" COR_RESET "\n");
+            printf(LINHA_FINA);
+            printf("  Conteudo do arquivo:\n");
+            printf("    Codigo de acesso: %d        " COR_OK "[NECESSARIO]" COR_RESET "\n", CODIGO_ACESSO);
+            printf("    CPF do funcionario: ***     " COR_ERRO "[DADO PESSOAL]" COR_RESET "\n");
+            printf("    Endereco residencial: ***   " COR_ERRO "[DADO PESSOAL]" COR_RESET "\n\n");
+            if (!codigoEncontrado) {
+                printf("  O que voce quer guardar para a missao?\n");
+                printf("    " COR_TECLA "[1]" COR_RESET " Apenas o codigo de acesso\n");
+                printf("    " COR_TECLA "[2]" COR_RESET " O arquivo inteiro, com os dados pessoais\n");
+                printf("    " COR_TECLA "[Q]" COR_RESET " Fechar o arquivo\n");
+            } else {
+                printf("  Codigo de acesso guardado: %d\n", CODIGO_ACESSO);
+                printf("  Os dados pessoais ficaram protegidos.\n\n");
+                printf("  " COR_TECLA "[E]" COR_RESET " Voltar ao mapa\n");
+            }
+
+        } else if (telaAtual == TELA_AVISO_PRIVACIDADE) {
+            /* ---------- FASE 2: AVISO DE PRIVACIDADE (US09) ---------- */
+            printf("  " COR_ERRO "!!! AVISO DE PRIVACIDADE !!!" COR_RESET "\n");
+            printf(LINHA_FINA);
+            printf("  Voce tentou acessar DADOS PESSOAIS (CPF, endereco,\n");
+            printf("  telefone) que NAO sao necessarios para a missao.\n\n");
+            printf("  Um sistema de IA deve usar apenas os dados de que\n");
+            printf("  realmente precisa. Coletar dados pessoais sem\n");
+            printf("  necessidade coloca a privacidade das pessoas em risco.\n\n");
+            printf("  " COR_TECLA "[E]" COR_RESET " Entendido\n");
+
+        } else if (telaAtual == TELA_CODIGO) {
+            /* ---------- FASE 2: COMPUTADOR BLOQUEADO (US10 e US11) ---------- */
+            printf("  " COR_TITULO "COMPUTADOR C - SISTEMA BLOQUEADO" COR_RESET "\n");
+            printf(LINHA_FINA);
+            printf("  Este computador guarda dados pessoais sem necessidade.\n");
+            printf("  Digite o codigo de acesso para desbloquear o sistema\n");
+            printf("  e ativar a protecao de dados.\n\n");
+            printf("  Codigo: [ ");
+            if (digitosDigitados > 0) {
+                printf("%0*d", digitosDigitados, codigoDigitado);   /* digitos ja teclados */
+            }
+            for (linhaExibida = digitosDigitados; linhaExibida < DIGITOS_CODIGO; linhaExibida++) {
+                printf("_");                                         /* digitos que faltam  */
+            }
+            printf(" ]\n\n");
+            printf("  " COR_TECLA "[0-9]" COR_RESET " Digitar o codigo   " COR_TECLA "[Q]" COR_RESET " Sair do computador\n");
+
+        } else if (telaAtual == TELA_PISTA3) {
+            /* ---------- FASE 3: PISTA (US12) ---------- */
+            printf("  " COR_OK "PISTA ENCONTRADA!" COR_RESET "\n\n");
+            printf("  Uma mensagem no chao diz:\n\n");
+            printf("     \"O sistema esta utilizando uma informacao\n");
+            printf("      inadequada para tomar uma decisao.\"\n\n");
+            printf("  Quando uma IA usa dados que nao deveriam influenciar\n");
+            printf("  uma decisao, ela pode ser INJUSTA. Isso e chamado de\n");
+            printf("  VIES.\n\n");
+            printf("  Veja os resultados no computador C2.\n\n");
+            printf("  " COR_TECLA "[E]" COR_RESET " Continuar\n");
+
+        } else if (telaAtual == TELA_RESULTADOS) {
+            /* ---------- FASE 3: COMPUTADOR C2 - resultados (US13) ---------- */
+            printf("  " COR_TITULO "COMPUTADOR C2 - RESULTADOS DA IA" COR_RESET "\n");
+            printf(LINHA_FINA);
+            printf("  Pedidos de bolsa de estudo:\n\n");
+            printf("    Ana   - nota 9.0 - frequencia 95%% - bairro X  RECUSADA\n");
+            printf("    Bruno - nota 6.0 - frequencia 80%% - bairro Y  APROVADO\n\n");
+            printf("  Por que a aluna com a maior nota foi recusada?\n");
+            printf("  Veja os criterios no computador C1.\n\n");
+            printf("  " COR_TECLA "[E]" COR_RESET " Voltar ao mapa\n");
+
+        } else if (telaAtual == TELA_DECISAO) {
+            /* ---------- FASE 3: COMPUTADOR C1 - sistema de decisao (US13 e US14) ---------- */
+            printf("  " COR_TITULO "COMPUTADOR C1 - SISTEMA DE DECISAO" COR_RESET "\n");
+            printf(LINHA_FINA);
+            printf("  Criterios usados pela IA para aprovar a bolsa:\n\n");
+            printf("    " COR_TECLA "[1]" COR_RESET " Nota do aluno\n");
+            printf("    " COR_TECLA "[2]" COR_RESET " Frequencia nas aulas\n");
+            printf("    " COR_TECLA "[3]" COR_RESET " Bairro onde o aluno mora\n\n");
+            printf("  Qual criterio e INADEQUADO e deve ser removido?\n");
+            printf("  " COR_TECLA "[1]" COR_RESET " " COR_TECLA "[2]" COR_RESET " " COR_TECLA "[3]" COR_RESET " Escolher     " COR_TECLA "[Q]" COR_RESET " Sair do computador\n");
+
         } else if (telaAtual == TELA_INVENTARIO) {
             /* ---------- INVENTARIO (tecla I) ---------- */
             printf("  " COR_TITULO "INVENTARIO" COR_RESET "\n");
@@ -624,6 +736,9 @@ int main(void) {
                    chaveDaPrivacidade ? COR_OK : COR_DIM, chaveDaPrivacidade ? 'X' : ' ');
             printf("   %s[%c]" COR_RESET " Chave da Justica\n\n",
                    chaveDaJustica ? COR_OK : COR_DIM, chaveDaJustica ? 'X' : ' ');
+            if (faseAtual == FASE_PRIVACIDADE) {
+                printf("   Codigo de acesso: %s\n\n", codigoEncontrado ? "2048" : "nao encontrado");
+            }
             printf("  " COR_TECLA "[I]" COR_RESET " Fechar inventario\n");
 
         } else if (telaAtual == TELA_CHAVE) {
@@ -634,9 +749,64 @@ int main(void) {
                 printf("  Licao: uma IA pode \"alucinar\" e afirmar algo falso\n");
                 printf("  com confianca. Sempre confira as respostas com\n");
                 printf("  fontes e informacoes confiaveis.\n\n");
+            } else if (faseAtual == FASE_PRIVACIDADE) {
+                printf("  " COR_OURO "*** CHAVE DA PRIVACIDADE OBTIDA! ***" COR_RESET "\n\n");
+                printf("  Sistema desbloqueado: os dados pessoais desnecessarios\n");
+                printf("  foram protegidos.\n\n");
+                printf("  Licao: uma IA deve usar apenas os dados de que\n");
+                printf("  realmente precisa para cumprir sua tarefa.\n\n");
+            } else {
+                printf("  " COR_OURO "*** CHAVE DA JUSTICA OBTIDA! ***" COR_RESET "\n\n");
+                printf("  O criterio \"bairro\" foi removido. Ana agora e\n");
+                printf("  aprovada pela sua nota.\n\n");
+                printf("  Licao: decisoes automatizadas precisam usar criterios\n");
+                printf("  justos. Dados inadequados geram VIES.\n\n");
             }
             printf("  Item adicionado ao inventario.\n\n");
             printf("  " COR_TECLA "[E]" COR_RESET " Continuar\n");
+
+        } else if (telaAtual == TELA_PORTA_FINAL) {
+            /* ---------- FASE FINAL: PORTA DE SAIDA (US15) ---------- */
+            printf("  " COR_TITULO "PORTA FINAL - SAIDA DO SISTEMA NEXUS" COR_RESET "\n");
+            printf(LINHA_FINA);
+            printf("  Verificando chaves...\n\n");
+            printf("   %s[%s]" COR_RESET " Chave da Verdade\n",
+                   chaveDaVerdade ? COR_OK : COR_DIM, chaveDaVerdade ? "OK" : "  ");
+            printf("   %s[%s]" COR_RESET " Chave da Privacidade\n",
+                   chaveDaPrivacidade ? COR_OK : COR_DIM, chaveDaPrivacidade ? "OK" : "  ");
+            printf("   %s[%s]" COR_RESET " Chave da Justica\n\n",
+                   chaveDaJustica ? COR_OK : COR_DIM, chaveDaJustica ? "OK" : "  ");
+            if (todasAsChaves) {
+                printf("  Todas as chaves foram encontradas!\n\n");
+                printf("  " COR_TECLA "[E]" COR_RESET " Abrir a porta    " COR_TECLA "[Q]" COR_RESET " Voltar\n");
+            } else {
+                printf("  A porta so abre com as tres chaves.\n\n");
+                printf("  " COR_TECLA "[Q]" COR_RESET " Voltar\n");
+            }
+
+        } else if (telaAtual == TELA_VITORIA) {
+            /* ---------- VITORIA - jogar novamente? (US15) ---------- */
+            printf(CAIXA_TOPO);
+            printf(CAIXA_ESQ COR_OK "  %-48s" COR_RESET CAIXA_DIR,
+                   "A PORTA SE ABRIU... VOCE ESCAPOU DO NEXUS!");
+            printf(CAIXA_BASE);
+            printf("  Voce corrigiu os erros da IA:\n");
+            printf("    - informacoes falsas (alucinacao)\n");
+            printf("    - uso indevido de dados pessoais (privacidade)\n");
+            printf("    - decisoes injustas (vies)\n\n");
+            printf("  Respostas incorretas: %d\n", respostasIncorretas);
+            printf("  Desempenho:           ");
+            if (respostasIncorretas == 0) {
+                printf("perfeito!\n\n");
+            } else if (respostasIncorretas <= 3) {
+                printf("muito bom!\n\n");
+            } else {
+                printf("continue praticando!\n\n");
+            }
+            printf("  Deseja jogar novamente?\n");
+            printf("    " COR_TECLA "[1]" COR_RESET " Jogar novamente\n");
+            printf("    " COR_TECLA "[2]" COR_RESET " Voltar ao menu\n");
+            printf("    " COR_TECLA "[3]" COR_RESET " Sair do jogo\n");
 
         } else if (telaAtual == TELA_CONFIRMAR_SAIDA) {
             /* ---------- CONFIRMAR SAIDA ---------- */
@@ -682,6 +852,18 @@ int main(void) {
                 printf("Incorreto. p ^ q so e V quando p E q sao V ao mesmo tempo.\n");
             } else if (mensagem == MSG_PORTA_ABERTA) {
                 printf("Correto! A porta D foi DESTRANCADA.\n");
+            } else if (mensagem == MSG_CODIGO_GUARDADO) {
+                printf("Codigo guardado! Voce usou apenas o dado necessario.\n");
+            } else if (mensagem == MSG_SISTEMA_BLOQUEADO) {
+                printf("Sistema bloqueado: encontre o codigo de acesso em um arquivo (A).\n");
+            } else if (mensagem == MSG_CODIGO_ERRADO) {
+                printf("Codigo incorreto! Confira o codigo guardado no inventario (I).\n");
+            } else if (mensagem == MSG_RESULTADOS_BLOQUEADO) {
+                printf("O computador C2 esta bloqueado. Encontre a pista (?) primeiro.\n");
+            } else if (mensagem == MSG_DECISAO_BLOQUEADA) {
+                printf("Primeiro veja os resultados da IA no computador C2.\n");
+            } else {
+                printf("Esse criterio e justo. Procure o que NAO deveria influenciar.\n");
             }
             printf(COR_RESET);
             mensagem = MSG_NENHUMA;   /* cada mensagem aparece uma unica vez */
@@ -699,12 +881,22 @@ int main(void) {
             printf("qualquer tecla\n");
         } else if (telaAtual == TELA_MAPA) {
             printf("W, A, S, D, E, I ou Q\n");
-        } else if (telaAtual == TELA_PISTA || telaAtual == TELA_CHAVE) {
+        } else if (telaAtual == TELA_PISTA || telaAtual == TELA_CHAVE ||
+                   telaAtual == TELA_AVISO_PRIVACIDADE || telaAtual == TELA_PISTA3 ||
+                   telaAtual == TELA_RESULTADOS) {
             printf("E\n");
         } else if (telaAtual == TELA_COMPUTADOR1) {
             printf("%s\n", computador1Resolvido ? "E ou Q" : "V, F ou Q");
         } else if (telaAtual == TELA_COMPUTADOR2) {
             printf("%s\n", computador2Resolvido ? "E ou Q" : "V, F ou Q");
+        } else if (telaAtual == TELA_ARQUIVO) {
+            printf("%s\n", codigoEncontrado ? "E ou Q" : "1, 2 ou Q");
+        } else if (telaAtual == TELA_CODIGO) {
+            printf("0 a 9 ou Q\n");
+        } else if (telaAtual == TELA_DECISAO) {
+            printf("1, 2, 3 ou Q\n");
+        } else if (telaAtual == TELA_PORTA_FINAL) {
+            printf("%s\n", todasAsChaves ? "E ou Q" : "Q");
         } else if (telaAtual == TELA_INVENTARIO) {
             printf("I ou Q\n");
         } else {
@@ -741,7 +933,9 @@ int main(void) {
                 entradaValida = (tecla == 'W' || tecla == 'A' || tecla == 'S' ||
                                  tecla == 'D' || tecla == 'E' || tecla == 'I' ||
                                  tecla == 'Q');
-            } else if (telaAtual == TELA_PISTA || telaAtual == TELA_CHAVE) {
+            } else if (telaAtual == TELA_PISTA || telaAtual == TELA_CHAVE ||
+                       telaAtual == TELA_AVISO_PRIVACIDADE || telaAtual == TELA_PISTA3 ||
+                       telaAtual == TELA_RESULTADOS) {
                 entradaValida = (tecla == 'E');
             } else if (telaAtual == TELA_COMPUTADOR1) {
                 if (computador1Resolvido) {
@@ -755,6 +949,18 @@ int main(void) {
                 } else {
                     entradaValida = (tecla == 'V' || tecla == 'F' || tecla == 'Q');
                 }
+            } else if (telaAtual == TELA_ARQUIVO) {
+                if (codigoEncontrado) {
+                    entradaValida = (tecla == 'E' || tecla == 'Q');
+                } else {
+                    entradaValida = (tecla == '1' || tecla == '2' || tecla == 'Q');
+                }
+            } else if (telaAtual == TELA_CODIGO) {
+                entradaValida = ((tecla >= '0' && tecla <= '9') || tecla == 'Q');
+            } else if (telaAtual == TELA_DECISAO) {
+                entradaValida = ((tecla >= '1' && tecla <= '3') || tecla == 'Q');
+            } else if (telaAtual == TELA_PORTA_FINAL) {
+                entradaValida = (tecla == 'Q' || (tecla == 'E' && todasAsChaves));
             } else if (telaAtual == TELA_INVENTARIO) {
                 entradaValida = (tecla == 'I' || tecla == 'Q');
             } else {
@@ -802,7 +1008,7 @@ int main(void) {
                  * Um unico laco testa todos os objetos (DRY); so os objetos
                  * da fase atual ficam ativos. */
                 objetoProximo = OBJ_NENHUM;
-                for (objeto = 1; objeto <= OBJ_CHAVE; objeto++) {
+                for (objeto = 1; objeto <= TOTAL_OBJETOS; objeto++) {
                     objetoLargura = 1;
                     if (objeto == OBJ_PISTA) {
                         objetoLinha = PISTA_LINHA;
@@ -822,10 +1028,42 @@ int main(void) {
                         objetoLinha = PORTA_LINHA;
                         objetoColuna = PORTA_COLUNA;
                         objetoAtivo = (faseAtual == FASE_VERDADE) && !portaAberta;
-                    } else {   /* OBJ_CHAVE */
+                    } else if (objeto == OBJ_CHAVE) {
                         objetoLinha = CHAVE_LINHA;
                         objetoColuna = CHAVE_COLUNA;
                         objetoAtivo = (faseAtual == FASE_VERDADE) && portaAberta && !chaveDaVerdade;
+                    } else if (objeto == OBJ_ARQUIVO1) {
+                        objetoLinha = A1_LINHA;
+                        objetoColuna = A1_COLUNA;
+                        objetoLargura = 2;
+                        objetoAtivo = (faseAtual == FASE_PRIVACIDADE);
+                    } else if (objeto == OBJ_ARQUIVO2) {
+                        objetoLinha = A2_LINHA;
+                        objetoColuna = A2_COLUNA;
+                        objetoLargura = 2;
+                        objetoAtivo = (faseAtual == FASE_PRIVACIDADE);
+                    } else if (objeto == OBJ_COMPUTADOR_BLOQUEADO) {
+                        objetoLinha = CB_LINHA;
+                        objetoColuna = CB_COLUNA;
+                        objetoAtivo = (faseAtual == FASE_PRIVACIDADE);
+                    } else if (objeto == OBJ_PISTA3) {
+                        objetoLinha = PISTA3_LINHA;
+                        objetoColuna = PISTA3_COLUNA;
+                        objetoAtivo = (faseAtual == FASE_JUSTICA) && !pista3Encontrada;
+                    } else if (objeto == OBJ_COMPUTADOR_DECISAO) {
+                        objetoLinha = DECISAO_LINHA;
+                        objetoColuna = DECISAO_COLUNA;
+                        objetoLargura = 2;
+                        objetoAtivo = (faseAtual == FASE_JUSTICA);
+                    } else if (objeto == OBJ_COMPUTADOR_RESULTADOS) {
+                        objetoLinha = RESULTADOS_LINHA;
+                        objetoColuna = RESULTADOS_COLUNA;
+                        objetoLargura = 2;
+                        objetoAtivo = (faseAtual == FASE_JUSTICA);
+                    } else {
+                        objetoLinha = PORTA_FINAL_LINHA;
+                        objetoColuna = PORTA_FINAL_COLUNA;
+                        objetoAtivo = (faseAtual == FASE_SAIDA);
                     }
 
                     /* "perto" = em qualquer casa vizinha (inclui diagonais) */
@@ -860,6 +1098,37 @@ int main(void) {
                 } else if (objetoProximo == OBJ_CHAVE) {
                     chaveDaVerdade = 1;
                     telaAtual = TELA_CHAVE;
+                } else if (objetoProximo == OBJ_ARQUIVO1) {
+                    telaAtual = TELA_ARQUIVO;
+                } else if (objetoProximo == OBJ_ARQUIVO2) {
+                    telaRetorno = TELA_MAPA;            /* arquivo so com dados pessoais */
+                    telaAtual = TELA_AVISO_PRIVACIDADE;
+                } else if (objetoProximo == OBJ_COMPUTADOR_BLOQUEADO) {
+                    if (codigoEncontrado) {
+                        codigoDigitado = 0;
+                        digitosDigitados = 0;
+                        telaAtual = TELA_CODIGO;
+                    } else {
+                        mensagem = MSG_SISTEMA_BLOQUEADO;
+                    }
+                } else if (objetoProximo == OBJ_PISTA3) {
+                    pista3Encontrada = 1;
+                    telaAtual = TELA_PISTA3;
+                } else if (objetoProximo == OBJ_COMPUTADOR_RESULTADOS) {
+                    if (pista3Encontrada) {
+                        resultadosVistos = 1;
+                        telaAtual = TELA_RESULTADOS;
+                    } else {
+                        mensagem = MSG_RESULTADOS_BLOQUEADO;
+                    }
+                } else if (objetoProximo == OBJ_COMPUTADOR_DECISAO) {
+                    if (resultadosVistos) {
+                        telaAtual = TELA_DECISAO;
+                    } else {
+                        mensagem = MSG_DECISAO_BLOQUEADA;
+                    }
+                } else if (objetoProximo == OBJ_PORTA_FINAL) {
+                    telaAtual = TELA_PORTA_FINAL;
                 } else {
                     mensagem = MSG_NADA_PROXIMO;
                 }
@@ -871,7 +1140,8 @@ int main(void) {
                 telaAtual = TELA_CONFIRMAR_SAIDA;
             }
 
-        } else if (telaAtual == TELA_PISTA) {
+        } else if (telaAtual == TELA_PISTA || telaAtual == TELA_PISTA3 ||
+                   telaAtual == TELA_RESULTADOS) {
             telaAtual = TELA_MAPA;
 
         } else if (telaAtual == TELA_COMPUTADOR1) {
@@ -887,6 +1157,7 @@ int main(void) {
                         computador1Resolvido = 1;
                     }
                 } else {
+                    respostasIncorretas++;
                     mensagem = (etapaComputador1 == 0) ? MSG_ERRO_P : MSG_ERRO_NAO_P;
                 }
             }
@@ -909,8 +1180,57 @@ int main(void) {
                         mensagem = MSG_PORTA_ABERTA;
                     }
                 } else {
+                    respostasIncorretas++;
                     mensagem = MSG_ERRO_TABELA;
                 }
+            }
+
+        } else if (telaAtual == TELA_ARQUIVO) {
+            /* Fase 2: guardar apenas o dado necessario (codigo) */
+            if (tecla == 'Q' || tecla == 'E') {
+                telaAtual = TELA_MAPA;
+            } else if (tecla == '1') {
+                codigoEncontrado = 1;
+                mensagem = MSG_CODIGO_GUARDADO;
+            } else {                              /* 2: dados pessoais demais */
+                respostasIncorretas++;
+                telaRetorno = TELA_ARQUIVO;
+                telaAtual = TELA_AVISO_PRIVACIDADE;
+            }
+
+        } else if (telaAtual == TELA_AVISO_PRIVACIDADE) {
+            telaAtual = telaRetorno;              /* volta para onde estava */
+
+        } else if (telaAtual == TELA_CODIGO) {
+            /* Fase 2: cada digito entra no fim do numero (2 -> 20 -> 204 -> 2048) */
+            if (tecla == 'Q') {
+                telaAtual = TELA_MAPA;
+            } else {
+                codigoDigitado = codigoDigitado * 10 + (tecla - '0');
+                digitosDigitados++;
+                if (digitosDigitados == DIGITOS_CODIGO) {
+                    if (codigoDigitado == CODIGO_ACESSO) {
+                        chaveDaPrivacidade = 1;
+                        telaAtual = TELA_CHAVE;
+                    } else {
+                        respostasIncorretas++;
+                        mensagem = MSG_CODIGO_ERRADO;
+                    }
+                    codigoDigitado = 0;
+                    digitosDigitados = 0;
+                }
+            }
+
+        } else if (telaAtual == TELA_DECISAO) {
+            /* Fase 3: remover o criterio inadequado (bairro) */
+            if (tecla == 'Q') {
+                telaAtual = TELA_MAPA;
+            } else if (tecla == CRITERIO_INADEQUADO) {
+                chaveDaJustica = 1;
+                telaAtual = TELA_CHAVE;
+            } else {
+                respostasIncorretas++;
+                mensagem = MSG_CRITERIO_LEGITIMO;
             }
 
         } else if (telaAtual == TELA_INVENTARIO) {
@@ -924,6 +1244,20 @@ int main(void) {
             destinoLinha = jogadorLinha;
             destinoColuna = jogadorColuna;
             telaAtual = TELA_MAPA;
+
+        } else if (telaAtual == TELA_PORTA_FINAL) {
+            telaAtual = (tecla == 'E') ? TELA_VITORIA : TELA_MAPA;
+
+        } else if (telaAtual == TELA_VITORIA) {
+            /* 1 = jogar novamente, 2 = menu, 3 = sair */
+            if (tecla == '1') {
+                reiniciarJogo = 1;
+                telaAtual = TELA_MAPA;
+            } else if (tecla == '2') {
+                telaAtual = TELA_MENU;
+            } else {
+                telaAtual = TELA_ENCERRAR;
+            }
 
         } else if (telaAtual == TELA_CONFIRMAR_SAIDA) {
             /* S confirma; N volta para a tela de origem */
