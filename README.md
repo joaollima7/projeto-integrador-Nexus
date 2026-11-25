@@ -1,3 +1,6 @@
+<p align="center"><img src="<img width="1316" height="912" alt="image" src="https://github.com/user-attachments/assets/6c97d4b5-467a-42c1-9a7b-d209ffa4ecb2" />
+" alt="NEXUS" width="640"></p>
+
 ## 📑 Sumário
 
 - [📖 Sobre o jogo](#-sobre-o-jogo)
