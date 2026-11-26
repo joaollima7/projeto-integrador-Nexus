@@ -326,6 +326,14 @@ https://drive.google.com/file/d/1XeyO1ZS0Zp9XKz_Lj7U1RG53p1rWexsV/view?usp=shari
 
 https://drive.google.com/file/d/1fJL4Bb733Mo3jbdpc8XOD8PNeylPF9N2/view?usp=sharing
 
+
+
+### Sprint Atual (FDS) - Week17e18:
+
+
+<p align="center"><img width="1683" height="837" alt="image" src="https://github.com/user-attachments/assets/f07e63aa-43e0-40b0-b1fd-b3aa78f621b6" />
+
+
 ---
 
 ## 👥 Integrantes
