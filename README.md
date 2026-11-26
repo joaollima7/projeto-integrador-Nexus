@@ -311,7 +311,8 @@ Os bugs encontrados durante o desenvolvimento e as histórias de usuário foram 
 
 🔗 [Ver as issues do projeto](https://github.com/joaollima7/projeto-integrador-Nexus/issues?q=is%3Aissue)
 
-<!-- Cole aqui o print das issues -->
+<p align="center"><img width="853" height="1067" alt="image" src="https://github.com/user-attachments/assets/6b841b26-1901-466c-bd90-117429ff2091" />
+
 
 ### Screencast (FDS) - Entrega 3
 
