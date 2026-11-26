@@ -110,3 +110,78 @@ A equipe trabalha direto na branch `main`. Para evitar conflitos:
    ```
 5. Se o `git push` for recusado, rode `git pull` de novo, resolva o que for preciso e tente outra vez.
 
+### Quem está de fora (Pull Request)
+
+1. Faça o fork e clone o seu fork.
+2. Crie uma branch com um nome que explique a mudança:
+   ```bash
+   git checkout -b corrige-colisao-parede
+   ```
+3. Faça as mudanças, compile e teste.
+4. Faça o commit e envie a branch:
+   ```bash
+   git add nexus.c
+   git commit -m "Corrige a colisão do personagem com a parede"
+   git push origin corrige-colisao-parede
+   ```
+5. No GitHub, abra um **Pull Request** para a `main` do repositório original. Explique o que mudou, por quê e como testar. Se o PR resolver uma issue, escreva `Closes #número` na descrição.
+
+---
+
+## Padrão de código
+
+- **Linguagem:** C no padrão C99.
+- **Sem avisos:** o código deve compilar sem erros e **sem warnings** com `-Wall -Wextra -std=c99`.
+- **Nomes claros:** variáveis, funções e constantes com nomes que expliquem o que são (`jogadorLinha`, `chaveDaVerdade`). Evite nomes como `x`, `a` ou `aux`.
+- **Comentários:** explique a finalidade dos blocos principais. Comente o porquê, não o óbvio.
+- **Sem repetir código:** se um bloco aparece mais de uma vez, reaproveite.
+- **Constantes:** use `#define` para números e textos fixos, em vez de números soltos no meio do código.
+- **Plataforma:** mantenha o jogo funcionando no Windows e no terminal do VS Code.
+- **Validação:** teclas inválidas devem ser ignoradas com aviso. O jogo nunca pode travar nem fechar de forma inesperada.
+- **Sem conteúdo extra:** não inclua arquivos compilados (`.exe`) nem arquivos pessoais do editor.
+
+---
+
+## Mensagens de commit
+
+Use uma frase curta, no imperativo, dizendo **o que** a mudança faz:
+
+| Bom | Ruim |
+|---|---|
+| `Corrige a porta que abria sem a chave` | `arrumei coisa` |
+| `Adiciona o inventário na tela do mapa` | `update` |
+| `Atualiza o README com as instruções` | `mudanças` |
+
+Se precisar explicar mais, escreva uma segunda linha de descrição (`git commit -m "título" -m "descrição"`).
+
+---
+
+## Testando antes de enviar
+
+O projeto não tem testes automáticos, então teste jogando. Antes de enviar, confira:
+
+- [ ] O código compila sem erros e sem warnings.
+- [ ] O menu funciona (`1` inicia, `2` mostra as instruções, `3` sai).
+- [ ] O personagem se move com `W`, `A`, `S`, `D` sem precisar de ENTER e para na parede com aviso.
+- [ ] A tecla `E` interage com o objeto ao lado e `I` abre o inventário.
+- [ ] Teclas inválidas mostram aviso e o jogo não trava.
+- [ ] A parte que você mudou funciona do início ao fim.
+- [ ] Se mexeu em uma fase, jogue a fase inteira até pegar a chave.
+- [ ] Se mexeu no fluxo final, jogue até a tela de vitória e teste "jogar novamente" e "sair".
+
+---
+
+## Reportando bugs e sugerindo melhorias
+
+Abra uma [issue](https://github.com/joaollima7/projeto-integrador-Nexus/issues/new) e inclua:
+
+**Para um bug:**
+- o que aconteceu e o que era esperado;
+- os passos para reproduzir (em qual fase, quais teclas);
+- uma imagem do terminal, se ajudar;
+- o seu Windows e a versão do gcc (`gcc --version`).
+
+**Para uma sugestão:**
+- o que você gostaria de ver no jogo e por que isso melhora a experiência.
+
+Antes de abrir, procure nas issues se alguém já reportou o mesmo assunto.
