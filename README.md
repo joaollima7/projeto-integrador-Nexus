@@ -9,7 +9,9 @@
 - [🗺️ Como funciona a aventura](#️-como-funciona-a-aventura)
 - [🧩 Sistema de jogo](#-sistema-de-jogo)
 - [🛠️ Tecnologias](#️-tecnologias)
+- [📥 Baixar e jogar](#-baixar-e-jogar)
 - [▶️ Como compilar e executar no VS Code](#️-como-compilar-e-executar-no-vs-code)
+- [🤝 Como contribuir](#-como-contribuir)
 - [📚 Documentação de FDS](#-documentação-de-fds)
 - [👥 Integrantes](#-integrantes)
 - [🚀 Proposta do projeto](#-proposta-do-projeto)
@@ -193,6 +195,20 @@ Ao escapar, o jogo mostra quantas respostas incorretas o jogador deu durante a a
 
 ---
 
+## 📥 Baixar e jogar
+
+Não quer compilar? Baixe o jogo pronto na **Release** do projeto:
+
+🔗 **https://github.com/joaollima7/projeto-integrador-Nexus/releases/latest**
+
+1. Abra o link e baixe o arquivo `nexus.exe`, na parte **Assets**;
+2. Abra o terminal do VS Code (ou o Prompt de Comando) na pasta onde o arquivo foi salvo;
+3. Execute `.\nexus.exe` (no Prompt de Comando, `nexus.exe`).
+
+> 🪟 Só funciona no Windows. O Windows pode mostrar um aviso de segurança, porque o arquivo não é assinado: clique em **Mais informações → Executar assim mesmo**.
+
+---
+
 ## ▶️ Como compilar e executar no VS Code
 
 ### Pré-requisitos
@@ -244,9 +260,58 @@ No mesmo terminal, digite:
 
 ---
 
+## 🤝 Como contribuir
+
+Quer ajudar no projeto? Veja o guia [CONTRIBUTING.md](CONTRIBUTING.md), que explica como configurar o ambiente, compilar o jogo e enviar uma contribuição.
+
+---
+
 ## 📚 Documentação de FDS
 
 > 📌 Os itens desta seção fazem parte das entregas da disciplina de **FDS (Fundamentos de Desenvolvimento de Software)**.
+
+### Histórias de usuário
+
+Todas as histórias de usuário planejadas foram implementadas no jogo.
+
+| ID | História de usuário | Implementada |
+|:---:|---|:---:|
+| US01 | Como jogador, quero iniciar um novo jogo pelo menu, para começar minha aventura no sistema NEXUS. | ✅ |
+| US02 | Como jogador, quero visualizar as instruções, para entender os comandos do jogo. | ✅ |
+| US03 | Como jogador, quero movimentar meu personagem pelo mapa, para explorar as fases do jogo. | ✅ |
+| US04 | Como jogador, quero interagir com objetos do mapa, para encontrar pistas e avançar nas fases. | ✅ |
+| US05 | Como jogador, quero encontrar pistas na primeira fase, para descobrir qual informação da IA não é confiável. | ✅ |
+| US06 | Como jogador, quero investigar os computadores da primeira fase, para identificar o sistema que apresenta erro. | ✅ |
+| US07 | Como jogador, quero corrigir o computador com erro, para resolver o problema da primeira fase. | ✅ |
+| US08 | Como jogador, quero encontrar arquivos na segunda fase, para descobrir informações necessárias para continuar. | ✅ |
+| US09 | Como jogador, quero evitar o uso de dados pessoais desnecessários, para aprender sobre privacidade no uso da IA. | ✅ |
+| US10 | Como jogador, quero encontrar o código de acesso, para desbloquear o sistema da segunda fase. | ✅ |
+| US11 | Como jogador, quero corrigir o problema de privacidade, para receber a Chave da Privacidade. | ✅ |
+| US12 | Como jogador, quero encontrar uma pista sobre uma decisão injusta na terceira fase, para identificar um problema no sistema de IA. | ✅ |
+| US13 | Como jogador, quero investigar os computadores da terceira fase, para encontrar o erro na decisão da IA. | ✅ |
+| US14 | Como jogador, quero corrigir o sistema da terceira fase, para resolver o problema de decisão injusta. | ✅ |
+| US15 | Como jogador, quero usar as três chaves para abrir a saída, para conseguir escapar do sistema NEXUS. | ✅ |
+
+### Evolução do jogo
+
+O NEXUS foi crescendo por etapas, sempre com uma versão que podia ser jogada:
+
+1. **Planejamento:** a equipe definiu a ideia do jogo, organizou as tarefas no Jira e desenhou o fluxo de telas (protótipo no Figma) e o diagrama de atividades.
+2. **Primeira versão:** o jogo começou simples, com o menu inicial, a tela de instruções e um mapa em que o personagem se movia com `W`, `A`, `S` e `D`.
+3. **Interação:** foram incluídas as paredes que bloqueiam a passagem, a tecla `E` para interagir com objetos próximos e o inventário.
+4. **Fase 1:** surgiram a pista, os computadores com as afirmações da IA e a tabela-verdade, a porta que só abre quando o sistema é corrigido e a primeira chave.
+5. **Fases 2 e 3:** foram criados os arquivos e o código de acesso da fase de privacidade e, depois, os computadores da fase de justiça, cada uma com seu mapa e sua chave.
+6. **Fase final:** a porta de saída passou a exigir as três chaves e foi criada a tela de vitória, com o resumo de desempenho e a opção de jogar novamente.
+7. **Acabamento:** o visual do terminal ganhou cores e molduras, as teclas passaram a ser validadas para o jogo não travar com entradas erradas, e a equipe fez testes e correções de bugs.
+8. **Hoje:** o jogo está completo e jogável do menu até o escape, no terminal do VS Code, no Windows.
+
+### Issues e bug tracker
+
+Os bugs encontrados durante o desenvolvimento e as histórias de usuário foram registrados como issues no GitHub, com labels e marco da versão `v1.0.0`. Todos já foram resolvidos e fechados.
+
+🔗 [Ver as issues do projeto](https://github.com/joaollima7/projeto-integrador-Nexus/issues?q=is%3Aissue)
+
+<!-- Cole aqui o print das issues -->
 
 ### Screencast (FDS) - Entrega 3
 
